@@ -1,6 +1,8 @@
 <template lang="pug">
   .container
-    .message-item {{ message.content }}
+    .message-item
+    |{{ message.val.displayName }}
+    |{{ message.val.content }}
 </template>
 
 <script>

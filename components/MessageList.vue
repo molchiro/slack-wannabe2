@@ -3,7 +3,7 @@
     messageItem(
       v-for="message in messages"
       :key="message.key"
-      :message="message.val"
+      :message="message"
       )
 </template>
 
