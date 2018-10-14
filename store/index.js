@@ -26,6 +26,9 @@ const store = () =>
       authUserName: state => {
         return state.auth.user ? state.auth.user.displayName : null
       },
+      authUserUid: state => {
+        return state.auth.user ? state.auth.user.uid : null
+      },
     },
     actions: {
       AuthStateChanged(context, user) {
