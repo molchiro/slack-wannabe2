@@ -3,12 +3,14 @@
     messageItem(
       v-for="message in messages"
       :key="message.key"
-      :message="message"
+      :message="message.val"
       )
 </template>
 
 <script>
+import firebase from '~/plugins/firebase.js'
 import MessageItem from '~/components/MessageItem'
+const messagesRef = firebase.database().ref('messages')
 
 export default {
   components: {
@@ -16,21 +18,16 @@ export default {
   },
   data() {
     return {
-      messages: [
-        {
-          key: 1,
-          content: 'foo',
-        },
-        {
-          key: 2,
-          content: 'bar',
-        },
-        {
-          key: 3,
-          content: 'baz',
-        },
-      ],
+      messages: [],
     }
+  },
+  mounted() {
+    messagesRef.on('child_added', snapshot => {
+      this.messages.push({
+        key: snapshot.key,
+        val: snapshot.val(),
+      })
+    })
   },
 }
 </script>
