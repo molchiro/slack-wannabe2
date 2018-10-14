@@ -17,18 +17,18 @@ const store = () =>
       },
     },
     getters: {
-      isAuthed: (state) => {
+      isAuthed: state => {
         return state.auth.user !== null
       },
-      isLoaded: (state) => {
+      isLoaded: state => {
         return state.auth.isLoaded
       },
-      user: (state) => {
+      user: state => {
         return state.auth.user
       },
     },
     actions: {
-      AuthStateChanged(context, user){
+      AuthStateChanged(context, user) {
         context.commit('loaded')
         context.commit('setUser', user)
       },
