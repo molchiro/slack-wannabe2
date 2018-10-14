@@ -3,13 +3,18 @@
     ul
       li.app-title slack-wannabe2
       li.button(@click="signOut") sign out
-      li.auth-username molchiro
+      li.auth-username {{ authUserName }}
 </template>
 
 <script>
 import firebase from '~/plugins/firebase.js'
 
 export default {
+  computed: {
+    authUserName() {
+      return this.$store.getters.authUserName
+    },
+  },
   methods: {
     signOut() {
       firebase.auth().signOut()

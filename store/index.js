@@ -23,8 +23,8 @@ const store = () =>
       isLoaded: state => {
         return state.auth.isLoaded
       },
-      user: state => {
-        return state.auth.user
+      authUserName: state => {
+        return state.auth.user ? state.auth.user.displayName : null
       },
     },
     actions: {
