@@ -2,7 +2,7 @@
   .container
     TheNavbar
     nuxt(v-if="isAuthed")
-    SignIn(v-if="!isAuthed")
+    SignIn(v-else)
 </template>
 
 <script>
