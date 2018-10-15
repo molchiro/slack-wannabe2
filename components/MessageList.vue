@@ -4,7 +4,8 @@
       v-for="message in messages"
       :key="message.key"
       :message="message"
-      )
+      @deleteMessage="deleteMessage"
+    )
 </template>
 
 <script>
@@ -28,6 +29,17 @@ export default {
         val: snapshot.val(),
       })
     })
+    messagesRef.on('child_removed', removedMessage => {
+      const removedMessageIndex = this.messages.findIndex(
+        x => x.key === removedMessage.key
+      )
+      this.messages.splice(removedMessageIndex, 1)
+    })
+  },
+  methods: {
+    deleteMessage(targetMessageKey) {
+      messagesRef.child(targetMessageKey).remove()
+    },
   },
 }
 </script>

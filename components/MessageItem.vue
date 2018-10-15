@@ -3,6 +3,7 @@
     .message-item
     | {{ message.val.displayName}}
     | {{ message.val.timestamp | formatUNIXtime }}
+    .button(@click='deleteMe') delete
     br
     | {{ message.val.content | formatNewLine }}
 </template>
@@ -21,6 +22,11 @@ export default {
   },
   props: {
     message: Object,
+  },
+  methods: {
+    deleteMe() {
+      this.$emit('deleteMessage', this.message.key)
+    },
   },
 }
 </script>
