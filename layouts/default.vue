@@ -17,11 +17,11 @@ export default {
     SignIn,
   },
   computed: {
-    ...mapGetters(['isAuthed']),
+    ...mapGetters('auth', ['isAuthed']),
   },
   created() {
     firebase.auth().onAuthStateChanged(user => {
-      this.$store.dispatch('AuthStateChanged', user)
+      this.$store.dispatch('auth/AuthStateChanged', user)
     })
   },
 }

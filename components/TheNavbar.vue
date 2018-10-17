@@ -12,7 +12,7 @@ import firebase from '~/plugins/firebase.js'
 export default {
   computed: {
     authUserName() {
-      return this.$store.getters.authUserName
+      return this.$store.getters['auth/authUserName']
     },
   },
   methods: {

@@ -20,9 +20,9 @@ export default {
         return
       }
       messagesRef.push({
-        uid: this.$store.getters.authUserUid,
+        uid: this.$store.getters['auth/authUserUid'],
         timestamp: new Date().getTime(),
-        displayName: this.$store.getters.authUserName,
+        displayName: this.$store.getters['auth/authUserName'],
         content: this.content,
       })
       this.content = ''
