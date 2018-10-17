@@ -1,7 +1,7 @@
 <template lang="pug">
   .container
-    messageList
-    messagePost
+    MessageList
+    MessagePost
 </template>
 
 <script>

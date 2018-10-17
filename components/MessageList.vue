@@ -1,6 +1,6 @@
 <template lang="pug">
   .container
-    messageItem(
+    MessageItem(
       v-for="message in messages"
       :key="message.key"
       :message="message"
