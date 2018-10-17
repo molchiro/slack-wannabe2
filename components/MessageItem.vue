@@ -4,8 +4,7 @@
     | {{ message.val.displayName}}
     | {{ message.val.timestamp | formatUNIXtime }}
     .button(@click='deleteMe') delete
-    br
-    | {{ message.val.content | formatNewLine }}
+    div(v-html="formatNewLine(message.val.content)")
 </template>
 
 <script>
@@ -16,9 +15,6 @@ export default {
     formatUNIXtime(UNIXtime) {
       return format(UNIXtime, 'YYYY-MM-DD HH:mm')
     },
-    formatNewLine(str) {
-      return str.replace(/\n/g, '<br>')
-    },
   },
   props: {
     message: Object,
@@ -26,6 +22,9 @@ export default {
   methods: {
     deleteMe() {
       this.$emit('deleteMessage', this.message.key)
+    },
+    formatNewLine(str) {
+      return str.replace(/\n/g, '<br>')
     },
   },
 }
