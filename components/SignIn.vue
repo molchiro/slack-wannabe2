@@ -2,7 +2,7 @@
   .container
     button.button.is-primary(
       @click="signIn"
-      :class="{ 'is-loading': !isLoaded }"
+      :class="{ 'is-loading': isLoading }"
     ) sign in
 </template>
 
@@ -12,7 +12,7 @@ import firebase from '~/plugins/firebase.js'
 const provider = new firebase.auth.GoogleAuthProvider()
 
 export default {
-  computed: mapState('auth', ['isLoaded']),
+  computed: mapState('auth', ['isLoading']),
   methods: {
     signIn() {
       firebase.auth().signInWithRedirect(provider)
