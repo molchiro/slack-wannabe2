@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import firebase from '~/plugins/firebase.js'
 const messagesRef = firebase.database().ref('messages')
 
@@ -14,15 +15,18 @@ export default {
       content: '',
     }
   },
+  computed: mapState({
+    user: state => state.auth.user,
+  }),
   methods: {
     post() {
       if (!this.content) {
         return
       }
       messagesRef.push({
-        uid: this.$store.getters['auth/authUserUid'],
+        uid: this.user.uid,
         timestamp: new Date().getTime(),
-        displayName: this.$store.getters['auth/authUserName'],
+        displayName: this.user.displayName,
         content: this.content,
       })
       this.content = ''

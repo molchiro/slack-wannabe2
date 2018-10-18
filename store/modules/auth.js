@@ -21,12 +21,6 @@ export default {
     isLoaded: state => {
       return state.isLoaded
     },
-    authUserName: state => {
-      return state.user ? state.user.displayName : null
-    },
-    authUserUid: state => {
-      return state.user ? state.user.uid : null
-    },
   },
   actions: {
     AuthStateChanged(context, user) {

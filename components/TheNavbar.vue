@@ -1,19 +1,22 @@
 <template lang="pug">
   .container
-    ul
-      li.app-title slack-wannabe2
-      li.button(@click="signOut") sign out
-      li.auth-username {{ authUserName }}
+    .app-title slack-wannabe2
+    span(v-if="isAuthed")
+      .button(@click="signOut") sign out
+      .auth-username {{ authUserName }}
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import firebase from '~/plugins/firebase.js'
 
 export default {
   computed: {
-    authUserName() {
-      return this.$store.getters['auth/authUserName']
-    },
+    ...mapGetters('auth', ['isAuthed']),
+    ...mapState({
+      authUserName: state => state.auth.user.displayName,
+    }),
   },
   methods: {
     signOut() {
