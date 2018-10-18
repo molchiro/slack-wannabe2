@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state() {
     return {
-      isLoaded: true,
+      isLoaded: false,
       user: null,
     }
   },
@@ -11,7 +11,7 @@ export default {
       state.user = user
     },
     loaded(state, status) {
-      state.isLoading = false
+      state.isLoaded = true
     },
   },
   getters: {
