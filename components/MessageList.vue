@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import firebase from '~/plugins/firebase.js'
 import MessageItem from '~/components/MessageItem'
 const messagesRef = firebase.database().ref('messages')
@@ -17,23 +18,16 @@ export default {
   components: {
     MessageItem,
   },
-  data() {
-    return {
-      messages: [],
-    }
-  },
+  computed: mapState('messages', ['messages']),
   mounted() {
     messagesRef.on('child_added', snapshot => {
-      this.messages.push({
+      this.$store.commit('messages/pushMessage', {
         key: snapshot.key,
         val: snapshot.val(),
       })
     })
     messagesRef.on('child_removed', removedMessage => {
-      const removedMessageIndex = this.messages.findIndex(
-        x => x.key === removedMessage.key
-      )
-      this.messages.splice(removedMessageIndex, 1)
+      this.$store.commit('messages/removeMessage', removedMessage)
     })
   },
   methods: {
