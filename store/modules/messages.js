@@ -9,10 +9,10 @@ export default {
     }
   },
   mutations: {
-    pushMessage(state, message) {
+    push(state, message) {
       state.messages.push(message)
     },
-    removeMessage(state, message) {
+    pop(state, message) {
       const targetMessageIndex = state.messages.findIndex(
         x => x.key === message.key
       )
@@ -22,13 +22,13 @@ export default {
   actions: {
     startListeners(context) {
       messagesRef.on('child_added', snapshot => {
-        context.commit('pushMessage', {
+        context.commit('push', {
           key: snapshot.key,
           val: snapshot.val(),
         })
       })
       messagesRef.on('child_removed', removedMessage => {
-        context.commit('removeMessage', removedMessage)
+        context.commit('pop', removedMessage)
       })
     },
     stopListeners(context) {
