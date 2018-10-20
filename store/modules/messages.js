@@ -37,5 +37,8 @@ export default {
     push(context, message) {
       messagesRef.push(message)
     },
+    remove(context, message) {
+      messagesRef.child(message.key).remove()
+    },
   },
 }

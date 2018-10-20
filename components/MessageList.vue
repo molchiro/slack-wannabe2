@@ -4,15 +4,12 @@
       v-for="message in messages"
       :key="message.key"
       :message="message"
-      @deleteMessage="deleteMessage"
     )
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import firebase from '~/plugins/firebase.js'
 import MessageItem from '~/components/MessageItem'
-const messagesRef = firebase.database().ref('messages')
 
 export default {
   components: {
@@ -24,11 +21,6 @@ export default {
   },
   destroyed() {
     this.$store.dispatch('messages/stopListeners')
-  },
-  methods: {
-    deleteMessage(targetMessageKey) {
-      messagesRef.child(targetMessageKey).remove()
-    },
   },
 }
 </script>
