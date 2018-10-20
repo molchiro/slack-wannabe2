@@ -20,15 +20,10 @@ export default {
   },
   computed: mapState('messages', ['messages']),
   mounted() {
-    messagesRef.on('child_added', snapshot => {
-      this.$store.commit('messages/pushMessage', {
-        key: snapshot.key,
-        val: snapshot.val(),
-      })
-    })
-    messagesRef.on('child_removed', removedMessage => {
-      this.$store.commit('messages/removeMessage', removedMessage)
-    })
+    this.$store.dispatch('messages/startListeners')
+  },
+  destroyed() {
+    this.$store.dispatch('messages/stopListeners')
   },
   methods: {
     deleteMessage(targetMessageKey) {
