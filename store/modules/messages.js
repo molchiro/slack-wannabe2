@@ -34,5 +34,8 @@ export default {
     stopListeners(context) {
       messagesRef.off()
     },
+    push(context, message) {
+      messagesRef.push(message)
+    },
   },
 }

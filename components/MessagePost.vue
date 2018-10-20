@@ -23,7 +23,7 @@ export default {
       if (!this.content) {
         return
       }
-      messagesRef.push({
+      this.$store.dispatch('messages/push', {
         uid: this.user.uid,
         timestamp: new Date().getTime(),
         displayName: this.user.displayName,
