@@ -6,8 +6,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import firebase from '~/plugins/firebase.js'
-const messagesRef = firebase.database().ref('messages')
 
 export default {
   data() {
