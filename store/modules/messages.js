@@ -24,7 +24,7 @@ export default {
   },
   actions: {
     startListener(context) {
-      this.unsubscribe = db.collection('messages').onSnapshot(snapshot => {
+      this.unsubscribe = messagesRef.orderBy('timestamp', 'asc').onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             context.commit('push', {
