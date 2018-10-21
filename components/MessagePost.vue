@@ -1,7 +1,7 @@
 <template lang="pug">
   .container
     textarea.textarea(v-model="content")
-    .button(@click='post') send
+    .button(@click='postMessage') send
 </template>
 
 <script>
@@ -17,7 +17,7 @@ export default {
     user: state => state.auth.user,
   }),
   methods: {
-    post() {
+    postMessage() {
       if (!this.content) {
         return
       }

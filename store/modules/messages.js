@@ -17,19 +17,19 @@ export default {
     },
     pop(state, message) {
       const targetMessageIndex = state.messages.findIndex(
-        x => x.key === message.id
+        x => x.id === message.id
       )
       state.messages.splice(targetMessageIndex, 1)
     },
   },
   actions: {
-    startListeners(context) {
+    startListener(context) {
       this.unsubscribe = db.collection('messages').onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             context.commit('push', {
-              key: change.doc.id,
-              val: change.doc.data(),
+              id: change.doc.id,
+              data: change.doc.data(),
             })
           }
           if (change.type === 'modified') {
@@ -41,14 +41,14 @@ export default {
         })
       })
     },
-    stopListeners(context) {
+    stopListener(context) {
       this.unsubscribe()
     },
     add(context, message) {
       messagesRef.add(message)
     },
     delete(context, message) {
-      messagesRef.doc(message.key).delete()
+      messagesRef.doc(message.id).delete()
     },
   },
 }

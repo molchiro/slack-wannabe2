@@ -1,10 +1,10 @@
 <template lang="pug">
   .container
     .message-item
-    | {{ message.val.displayName}}
-    | {{ message.val.timestamp | formatUNIXtime }}
+    | {{ message.data.displayName}}
+    | {{ message.data.timestamp | formatUNIXtime }}
     .button(@click='deleteMessage') 削除
-    div(v-html="formatNewLine(message.val.content)")
+    div(v-html="formatNewLine(message.data.content)")
 </template>
 
 <script>

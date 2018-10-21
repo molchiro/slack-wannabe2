@@ -2,7 +2,7 @@
   .container
     MessageItem(
       v-for="message in messages"
-      :key="message.key"
+      :key="message.id"
       :message="message"
     )
 </template>
@@ -17,10 +17,10 @@ export default {
   },
   computed: mapState('messages', ['messages']),
   mounted() {
-    this.$store.dispatch('messages/startListeners')
+    this.$store.dispatch('messages/startListener')
   },
   destroyed() {
-    this.$store.dispatch('messages/stopListeners')
+    this.$store.dispatch('messages/stopListener')
   },
 }
 </script>
