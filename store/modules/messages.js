@@ -1,7 +1,4 @@
 import firebase from '~/plugins/firebase.js'
-const db = firebase.firestore()
-db.settings({ timestampsInSnapshots: true })
-const messagesRef = db.collection('messages')
 
 export default {
   namespaced: true,
@@ -24,6 +21,8 @@ export default {
   },
   actions: {
     startListener(context) {
+      const db = firebase.firestore()
+      db.settings({ timestampsInSnapshots: true })
       this.unsubscribe = db.collection('messages').onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
