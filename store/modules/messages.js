@@ -43,8 +43,8 @@ export default {
     stopListeners(context) {
       // messagesRef.off()
     },
-    push(context, message) {
-      // messagesRef.set(message)
+    add(context, message) {
+      messagesRef.add(message)
     },
     remove(context, message) {
       // messagesRef.child(message.key).remove()
