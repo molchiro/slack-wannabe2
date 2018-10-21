@@ -5,6 +5,7 @@ const messagesRef = db.collection('messages')
 
 export default {
   namespaced: true,
+  unsubscribe: null,
   state() {
     return {
       messages: [],
@@ -23,7 +24,7 @@ export default {
   },
   actions: {
     startListeners(context) {
-      db.collection('messages').onSnapshot(snapshot => {
+      this.unsubscribe = db.collection('messages').onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             context.commit('push', {
@@ -41,7 +42,7 @@ export default {
       })
     },
     stopListeners(context) {
-      // messagesRef.off()
+      this.unsubscribe()
     },
     add(context, message) {
       messagesRef.add(message)
