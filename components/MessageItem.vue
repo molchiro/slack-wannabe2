@@ -3,7 +3,7 @@
     .message-item
     | {{ message.val.displayName}}
     | {{ message.val.timestamp | formatUNIXtime }}
-    .button(@click='remove') 削除
+    .button(@click='deleteMessage') 削除
     div(v-html="formatNewLine(message.val.content)")
 </template>
 
@@ -20,8 +20,8 @@ export default {
     message: Object,
   },
   methods: {
-    remove() {
-      this.$store.dispatch('messages/remove', this.message)
+    deleteMessage() {
+      this.$store.dispatch('messages/delete', this.message)
     },
     formatNewLine(str) {
       return str.replace(/\n/g, '<br>')

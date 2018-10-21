@@ -14,12 +14,12 @@ export default {
     push(state, message) {
       state.messages.push(message)
     },
-    // pop(state, message) {
-    //   const targetMessageIndex = state.messages.findIndex(
-    //     x => x.key === message.key
-    //   )
-    //   state.messages.splice(targetMessageIndex, 1)
-    // },
+    pop(state, message) {
+      const targetMessageIndex = state.messages.findIndex(
+        x => x.key === message.id
+      )
+      state.messages.splice(targetMessageIndex, 1)
+    },
   },
   actions: {
     startListeners(context) {
@@ -35,7 +35,7 @@ export default {
             // 編集を検知した時の処理
           }
           if (change.type === 'removed') {
-            // context.commit('pop', removedMessage)
+            context.commit('pop', change.doc)
           }
         })
       })
@@ -46,8 +46,8 @@ export default {
     add(context, message) {
       messagesRef.add(message)
     },
-    remove(context, message) {
-      // messagesRef.child(message.key).remove()
+    delete(context, message) {
+      messagesRef.doc(message.key).delete()
     },
   },
 }
