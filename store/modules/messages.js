@@ -25,23 +25,23 @@ export default {
   actions: {
     startListener(context) {
       this.unsubscribe = messagesRef
-      .orderBy('timestamp', 'asc')
-      .onSnapshot(snapshot => {
-        snapshot.docChanges().forEach(change => {
-          if (change.type === 'added') {
-            context.commit('push', {
-              id: change.doc.id,
-              data: change.doc.data(),
-            })
-          }
-          if (change.type === 'modified') {
-            // 編集を検知した時の処理
-          }
-          if (change.type === 'removed') {
-            context.commit('pop', change.doc)
-          }
+        .orderBy('timestamp', 'asc')
+        .onSnapshot(snapshot => {
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              context.commit('push', {
+                id: change.doc.id,
+                data: change.doc.data(),
+              })
+            }
+            if (change.type === 'modified') {
+              // 編集を検知した時の処理
+            }
+            if (change.type === 'removed') {
+              context.commit('pop', change.doc)
+            }
+          })
         })
-      })
     },
     stopListener(context) {
       this.unsubscribe()
