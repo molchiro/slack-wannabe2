@@ -1,5 +1,5 @@
 <template lang="pug">
-  section.container
+  v-layout
     ChatContainer
 </template>
 
