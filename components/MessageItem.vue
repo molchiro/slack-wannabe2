@@ -3,7 +3,7 @@
     .message-item
     | {{ message.data.displayName}}
     | {{ message.data.timestamp | formatUNIXtime }}
-    .button(@click='deleteMessage') 削除
+    button.button(@click='deleteMessage') 削除
     div(v-html="formatNewLine(message.data.content)")
 </template>
 
