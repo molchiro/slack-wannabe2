@@ -1,5 +1,5 @@
 <template lang="pug">
-  .container
+  v-list(two-line)
     MessageItem(
       v-for="message in messages"
       :key="message.id"

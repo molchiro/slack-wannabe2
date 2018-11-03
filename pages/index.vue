@@ -1,6 +1,5 @@
 <template lang="pug">
-  v-layout
-    ChatContainer
+  ChatContainer
 </template>
 
 <script>

@@ -1,10 +1,11 @@
 <template lang="pug">
-  .container
-    .message-item
-    | {{ message.data.displayName}}
-    | {{ message.data.timestamp | formatUNIXtime }}
-    button.button(@click='deleteMessage') 削除
-    div(v-html="formatNewLine(message.data.content)")
+  v-list-tile
+    v-list-tile-content
+      v-list-tile-title {{ message.data.displayName}}
+      v-list-tile-sub-title.text--primary(v-html="formatNewLine(message.data.content)" )
+    v-list-tile-action
+      v-list-tile-action-text {{ message.data.timestamp | formatUNIXtime }}
+      v-btn(@click='deleteMessage') 削除
 </template>
 
 <script>
