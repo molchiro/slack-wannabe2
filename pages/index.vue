@@ -5,7 +5,6 @@
 
 <script>
 import ChatContainer from '~/components/ChatContainer.vue'
-
 export default {
   components: {
     ChatContainer,
