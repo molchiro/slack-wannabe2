@@ -1,9 +1,10 @@
 <template lang="pug">
-  .container
-    .app-title slack-wannabe2
-    span(v-if="isAuthed")
-      .button(@click="signOut") sign out
-      .auth-username {{ authUserName }}
+  v-toolbar
+    v-toolbar-title slack-wannabe2
+    v-spacer
+    v-toolbar-items(v-if="isAuthed")
+      span {{ authUserName }}
+      v-btn(@click="signOut" flat) sign out
 </template>
 
 <script>
@@ -27,12 +28,4 @@ export default {
 </script>
 
 <style scoped lang="sass">
-  .container
-    display: table
-  .app-title
-    float: left
-  .auth-username
-    float: right
-  .button
-    float: right
 </style>

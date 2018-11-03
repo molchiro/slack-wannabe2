@@ -1,10 +1,9 @@
 <template lang="pug">
   v-app
+    TheNavbar
     v-content
-      v-container
-        TheNavbar
-        nuxt(v-if="isAuthed")
-        SignIn(v-else)
+      nuxt(v-if="isAuthed")
+      SignIn(v-else)
 </template>
 
 <script>
