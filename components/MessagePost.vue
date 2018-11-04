@@ -1,7 +1,8 @@
 <template lang="pug">
-  .container
-    textarea.textarea(v-model="content")
-    .button(@click='postMessage') send
+  v-bottom-sheet(inset v-model="sheet")
+    v-btn(slot="activator" color='primary') 発言する
+    v-textarea(solo v-model="content" placeholder="メッセージをどうぞ")
+    v-btn(@click='postMessage') send
 </template>
 
 <script>
@@ -11,6 +12,7 @@ export default {
   data() {
     return {
       content: '',
+      sheet: false,
     }
   },
   computed: mapState({
@@ -28,6 +30,7 @@ export default {
         content: this.content,
       })
       this.content = ''
+      this.sheet = false
     },
   },
 }
