@@ -1,7 +1,7 @@
 <template lang="pug">
-  div
-    MessageList
-    MessagePost
+  v-container
+    MessageList.scroll-y(style="max-height: 45vw")
+    MessagePost(style="max-height: 5vw")
 </template>
 
 <script>

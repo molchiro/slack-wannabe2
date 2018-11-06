@@ -1,10 +1,10 @@
 <template lang="pug">
-  v-list(two-line)
-    MessageItem(
-      v-for="message in messages"
-      :key="message.id"
-      :message="message"
-    )
+    v-list(two-line)
+      MessageItem(
+        v-for="message in messages"
+        :key="message.id"
+        :message="message"
+      )
 </template>
 
 <script>
