@@ -1,5 +1,7 @@
+import firebase from '~/plugins/firebase.js'
 export default {
   namespaced: true,
+  unsubscribe: null,
   state() {
     return {
       isLoading: true,
@@ -9,6 +11,9 @@ export default {
   mutations: {
     setUser(state, user) {
       state.user = user
+    },
+    loading(state) {
+      state.isLoading = true
     },
     loaded(state, status) {
       state.isLoading = false
@@ -20,9 +25,14 @@ export default {
     },
   },
   actions: {
-    AuthStateChanged(context, user) {
-      context.commit('loaded')
-      context.commit('setUser', user)
+    startListener(context) {
+      this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+        context.commit('loaded')
+        context.commit('setUser', user)
+      })
+    },
+    stopListener(context) {
+      unsubscribe()
     },
   },
 }
