@@ -2,7 +2,7 @@
   v-app
     TheNavbar
     v-content
-      v-container
+      v-container(fill-height)
         nuxt(v-if="isAuthed")
         SignIn(v-else)
 </template>

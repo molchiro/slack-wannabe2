@@ -1,6 +1,7 @@
 <template lang="pug">
-  v-layout
+  v-layout(align-center justify-center)
     v-btn(
+      large
       @click="signIn"
       :class="{ 'is-loading': isLoading }"
     ) sign in
