@@ -1,6 +1,6 @@
 <template lang="pug">
-  .container
-    button.button.is-primary(
+  v-layout
+    v-btn(
       @click="signIn"
       :class="{ 'is-loading': isLoading }"
     ) sign in

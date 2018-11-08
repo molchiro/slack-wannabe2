@@ -2,8 +2,9 @@
   v-app
     TheNavbar
     v-content
-      nuxt(v-if="isAuthed")
-      SignIn(v-else)
+      v-container
+        nuxt(v-if="isAuthed")
+        SignIn(v-else)
 </template>
 
 <script>
