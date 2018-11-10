@@ -1,7 +1,7 @@
 <template lang="pug">
   v-layout(column)
-    MessageList.scroll-y(style="max-height: 45vw")
-    MessagePost(style="max-height: 5vw")
+    MessageList.scroll-y(style="height: 45vw")
+    MessagePost(style="height: 5vw")
 </template>
 
 <script>
