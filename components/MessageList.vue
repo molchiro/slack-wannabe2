@@ -1,4 +1,5 @@
 <template lang="pug">
+  v-card
     v-list(two-line)
       MessageItem(
         v-for="message in messages"
