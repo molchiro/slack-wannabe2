@@ -1,9 +1,7 @@
 <template lang="pug">
   v-layout(column)
     MessageList.scroll-y(style="max-height: 45vw")
-    v-bottom-sheet(inset v-model="sheet" style="max-height: 5vw")
-      v-btn(block slot="activator" color='primary') 発言する
-      MessagePost
+    MessagePost(style="max-height: 5vw")
 </template>
 
 <script>
@@ -14,11 +12,6 @@ export default {
   components: {
     MessageList,
     MessagePost,
-  },
-  data() {
-    return {
-      sheet: false,
-    }
   },
 }
 </script>

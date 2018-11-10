@@ -1,5 +1,6 @@
 <template lang="pug">
-
+  v-bottom-sheet(inset v-model="sheet")
+    v-btn(block slot="activator" color='primary') 発言する
     v-card
       v-container
         v-textarea(
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       content: '',
+      sheet: false,
       rules: [v => v.length > 0 || 'メッセージは空欄不可です'],
     }
   },
