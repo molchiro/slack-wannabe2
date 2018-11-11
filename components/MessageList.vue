@@ -1,11 +1,17 @@
 <template lang="pug">
   v-card
     v-list(two-line)
-      MessageItem(
+      div(
         v-for="message in messages"
         :key="message.id"
-        :message="message"
       )
+        MessageItem(
+          v-if="message.type==='message'"
+          :message="message"
+        )
+        div(v-if="message.type==='dateDivider'")
+          v-subheader {{ message.data }}
+          v-divider
 </template>
 
 <script>
