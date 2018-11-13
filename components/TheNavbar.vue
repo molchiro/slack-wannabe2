@@ -3,7 +3,7 @@
     v-toolbar-title slack-wannabe2
     v-spacer
     v-toolbar-items(v-if="isAuthed")
-      span {{ authUserName }}
+      v-layout(align-center justify-end fill-height) {{ authUserName }}
       v-btn(@click="signOut" flat) sign out
 </template>
 
