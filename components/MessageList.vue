@@ -10,8 +10,8 @@
           :message="message"
         )
         div(v-if="message.type==='dateDivider'")
-          v-subheader {{ message.data }}
           v-divider
+          v-subheader {{ message.data }}
 </template>
 
 <script>
