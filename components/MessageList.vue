@@ -6,10 +6,10 @@
         :key="message.id"
       )
         MessageItem(
-          v-if="message.type==='message'"
+          v-if="message.type === 'message'"
           :message="message"
         )
-        div(v-if="message.type==='dateDivider'")
+        div(v-if="message.type === 'dateDivider'")
           v-divider
           v-subheader {{ message.data }}
 </template>
