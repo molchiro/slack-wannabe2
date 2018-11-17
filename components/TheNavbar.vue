@@ -4,7 +4,7 @@
     v-spacer
     v-toolbar-items(v-if="isAuthed")
       v-layout(align-center justify-end fill-height) {{ authUserName }}
-      v-btn(@click="signOut" flat) sign out
+      v-btn(@click="signOut" flat) ログアウト
 </template>
 
 <script>

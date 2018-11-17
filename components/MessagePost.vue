@@ -21,7 +21,7 @@
             block
             :disabled="!valid"
             @click='postMessage'
-          ) send
+          ) 送信
 </template>
 
 <script>
