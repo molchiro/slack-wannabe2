@@ -5,7 +5,7 @@
       :disabled="isLoading"
       color="info"
       @click="signIn"
-    ) サインイン
+    ) ログイン
 </template>
 
 <script>
