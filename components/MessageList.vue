@@ -2,22 +2,19 @@
   v-card
     v-list(two-line)
       div(
-        v-for="message in messages"
+        v-for="(message, index) in messages"
         :key="message.id"
       )
-        MessageItem(
-          v-if="message.type === 'message'"
-          :message="message"
-        )
-        div(v-if="message.type === 'dateDivider'")
+        div(v-if="isNewDay(index)")
           v-divider
-          v-subheader {{ message.data }}
+          v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
+        MessageItem(:message="message")
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import MessageItem from '~/components/MessageItem'
-
+import format from 'date-fns/format'
 export default {
   components: {
     MessageItem,
@@ -28,6 +25,16 @@ export default {
   },
   destroyed() {
     this.$store.dispatch('messages/stopListener')
+  },
+  methods: {
+    UNIXtimeToDate(UNIXtime) {
+      return format(UNIXtime, 'YYYY-MM-DD')
+    },
+    isNewDay(index) {
+      const getDate = index =>
+        this.UNIXtimeToDate(this.messages[index].data.timestamp)
+      return index === 0 || getDate(index - 1) !== getDate(index)
+    },
   },
 }
 </script>
