@@ -5,7 +5,7 @@
         v-for="(message, index) in messages"
         :key="message.id"
       )
-        div(v-if="isNewDay(index)")
+        div(v-if="index === 0 || isNewDay(message, messages[index - 1])")
           v-divider
           v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
         MessageItem(:message="message")
@@ -30,10 +30,9 @@ export default {
     UNIXtimeToDate(UNIXtime) {
       return format(UNIXtime, 'YYYY-MM-DD')
     },
-    isNewDay(index) {
-      const getDate = index =>
-        this.UNIXtimeToDate(this.messages[index].data.timestamp)
-      return index === 0 || getDate(index - 1) !== getDate(index)
+    isNewDay(currentMessage, prevMessage) {
+      const getDate = message => this.UNIXtimeToDate(message.data.timestamp)
+      return getDate(currentMessage) !== getDate(prevMessage)
     },
   },
 }
