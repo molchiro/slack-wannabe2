@@ -33,6 +33,19 @@ export default {
                 id: change.doc.id,
                 data: change.doc.data(),
               })
+              if ( change.doc.data().timestamp > 1542895187187) {
+                if ("Notification" in window) {
+                  const permission = Notification.permission
+
+                  if (permission === "denied" || permission === "granted") {
+                    // なんかする？
+                  }
+
+                  Notification.requestPermission().then( () => {
+                    const notification = new Notification("新しいメッセージ");
+                  })
+                }
+              }
             }
             if (change.type === 'modified') {
               // 編集を検知した時の処理
