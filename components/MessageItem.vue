@@ -31,6 +31,3 @@ export default {
 }
 </script>
 
-<style scoped lang="sass">
-  .message-item
-</style>
