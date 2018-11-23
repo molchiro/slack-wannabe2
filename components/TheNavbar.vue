@@ -15,7 +15,7 @@ export default {
   computed: {
     ...mapGetters('auth', ['isAuthed']),
     ...mapState({
-      authUserName: state => state.auth.user.displayName,
+      authUserName: state => state.auth.authedUser.displayName,
     }),
   },
   methods: {

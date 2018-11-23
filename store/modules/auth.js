@@ -1,4 +1,6 @@
 import firebase from '~/plugins/firebase.js'
+const db = firebase.firestore()
+db.settings({ timestampsInSnapshots: true })
 const provider = new firebase.auth.GoogleAuthProvider()
 export default {
   namespaced: true,
@@ -6,12 +8,12 @@ export default {
   state() {
     return {
       isLoading: true,
-      user: null,
+      authedUser: null,
     }
   },
   mutations: {
     setUser(state, user) {
-      state.user = user
+      state.authedUser = user
     },
     loading(state) {
       state.isLoading = true
@@ -22,7 +24,7 @@ export default {
   },
   getters: {
     isAuthed: state => {
-      return state.user !== null
+      return state.authedUser !== null
     },
   },
   actions: {
@@ -31,9 +33,29 @@ export default {
       firebase.auth().signInWithRedirect(provider)
     },
     startListener(context) {
-      this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
-        context.commit('loaded')
-        context.commit('setUser', user)
+      this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
+        const authedUsersRef = db.doc(`users/${authedUser.uid}`)
+        authedUsersRef.get().then(doc => {
+          if (!doc.exists) {
+            const setUserData = {
+              displayName: authedUser.displayName,
+              lastCheckedTimestamp: new Date().getTime(),
+            }
+            authedUsersRef.set().then(() => {
+              context.commit('setUser', {
+                ...setUserData,
+                uid: authedUser.uid,
+              })
+            })
+            context.commit('loaded')
+          } else {
+            context.commit('setUser', {
+              ...doc.data(),
+              uid: doc.id,
+            })
+            context.commit('loaded')
+          }
+        })
       })
     },
     stopListener(context) {
