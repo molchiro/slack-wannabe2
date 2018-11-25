@@ -35,26 +35,16 @@ export default {
     startListener(context) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
         const authedUsersRef = db.doc(`users/${authedUser.uid}`)
-        authedUsersRef.get().then(doc => {
-          if (!doc.exists) {
-            const setUserData = {
-              displayName: authedUser.displayName,
-              lastVisitedAt: new Date().getTime(),
-            }
-            authedUsersRef.set(setUserData).then(() => {
-              context.commit('setUser', {
-                ...setUserData,
-                uid: authedUser.uid,
-              })
-              context.commit('loaded')
-            })
-          } else {
-            context.commit('setUser', {
-              ...doc.data(),
-              uid: doc.id,
-            })
-            context.commit('loaded')
-          }
+        const setUserData = {
+          displayName: authedUser.displayName,
+          lastVisitedAt: new Date().getTime(),
+        }
+        authedUsersRef.set(setUserData, {merge: true}).then(() => {
+          context.commit('setUser', {
+            ...setUserData,
+            uid: authedUser.uid,
+          })
+          context.commit('loaded')
         })
       })
     },
