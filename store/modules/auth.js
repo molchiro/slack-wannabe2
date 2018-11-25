@@ -41,7 +41,7 @@ export default {
               displayName: authedUser.displayName,
               lastVisitedAt: new Date().getTime(),
             }
-            authedUsersRef.set().then(() => {
+            authedUsersRef.set(setUserData).then(() => {
               context.commit('setUser', {
                 ...setUserData,
                 uid: authedUser.uid,
