@@ -39,7 +39,7 @@ export default {
           if (!doc.exists) {
             const setUserData = {
               displayName: authedUser.displayName,
-              lastCheckedTimestamp: new Date().getTime(),
+              lastVisitedAt: new Date().getTime(),
             }
             authedUsersRef.set().then(() => {
               context.commit('setUser', {
