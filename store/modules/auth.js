@@ -46,8 +46,8 @@ export default {
                 ...setUserData,
                 uid: authedUser.uid,
               })
+              context.commit('loaded')
             })
-            context.commit('loaded')
           } else {
             context.commit('setUser', {
               ...doc.data(),
