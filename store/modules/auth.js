@@ -39,7 +39,7 @@ export default {
           displayName: authedUser.displayName,
           lastVisitedAt: new Date().getTime(),
         }
-        authedUsersRef.set(setUserData, {merge: true}).then(() => {
+        authedUsersRef.set(setUserData, { merge: true }).then(() => {
           context.commit('setUser', {
             ...setUserData,
             uid: authedUser.uid,
