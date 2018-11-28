@@ -15,6 +15,9 @@ export default {
     setUser(state, user) {
       state.authedUser = user
     },
+    readUntil(state, messageCreatedAt) {
+      state.authedUser.readUntil = messageCreatedAt
+    },
     loading(state) {
       state.isLoading = true
     },
@@ -31,6 +34,13 @@ export default {
     signIn(context) {
       context.commit('loading')
       firebase.auth().signInWithRedirect(provider)
+    },
+    readUntil(context, messageCreatedAt) {
+      db.doc(`users/${context.state.authedUser.uid}`)
+        .set({ readUntil: messageCreatedAt }, { merge: true })
+        .then(() => {
+          context.commit('readUntil', messageCreatedAt)
+        })
     },
     startListener(context) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {

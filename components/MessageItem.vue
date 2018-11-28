@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-list-tile
+  v-list-tile(@click='readUntil')
     v-list-tile-content
       v-list-tile-title {{ message.data.displayName}}
       v-list-tile-sub-title.text--primary(v-html="formatNewLine(message.data.content)" )
@@ -21,6 +21,9 @@ export default {
     message: Object,
   },
   methods: {
+    readUntil() {
+      this.$store.dispatch('auth/readUntil', this.message.data.timestamp)
+    },
     deleteMessage() {
       this.$store.dispatch('messages/delete', this.message)
     },
