@@ -33,7 +33,10 @@ export default {
                 id: change.doc.id,
                 data: change.doc.data(),
               })
-              if (change.doc.data().timestamp > 1542895187187) {
+              if (
+                change.doc.data().timestamp >
+                context.rootState.auth.authedUser.readUntil
+              ) {
                 if ('Notification' in window) {
                   const permission = Notification.permission
 
