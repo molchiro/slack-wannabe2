@@ -44,9 +44,11 @@ export default {
   methods: {
     postMessage() {
       if (this.$refs.post.validate()) {
+        const now = new Date().getTime()
+        this.$store.dispatch('auth/readUntil', now)
         this.$store.dispatch('messages/add', {
           uid: this.user.uid,
-          timestamp: new Date().getTime(),
+          timestamp: now,
           displayName: this.user.displayName,
           content: this.content,
         })

@@ -36,11 +36,9 @@ export default {
       firebase.auth().signInWithRedirect(provider)
     },
     readUntil(context, messageCreatedAt) {
+      context.commit('readUntil', messageCreatedAt)
       db.doc(`users/${context.state.authedUser.uid}`)
         .set({ readUntil: messageCreatedAt }, { merge: true })
-        .then(() => {
-          context.commit('readUntil', messageCreatedAt)
-        })
     },
     startListener(context) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
