@@ -5,8 +5,6 @@
         v-for="(message, index) in messages"
         :key="message.id"
       )
-        div(v-if="message.data.timestamp > authedUser.readUntil")
-          div 未読
         div(v-if="index === 0 || isNewDay(message, messages[index - 1])")
           v-divider
           v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
@@ -23,7 +21,6 @@ export default {
   },
   computed: {
     ...mapState('messages', ['messages']),
-    ...mapState('auth', ['authedUser']),
   },
   mounted() {
     this.$store.dispatch('messages/startListener')

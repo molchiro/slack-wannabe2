@@ -1,7 +1,10 @@
 <template lang="pug">
   v-list-tile(@click='readUntil')
     v-list-tile-content
-      v-list-tile-title {{ message.data.displayName}}
+      v-badge(v-model="isNew" color="red lighten-3")
+        span.caption(slot="badge") new
+        v-list-tile-title {{ message.data.displayName}}
+      v-badge
       v-list-tile-sub-title.text--primary(v-html="formatNewLine(message.data.content)" )
     v-list-tile-action
       v-list-tile-action-text {{ message.data.timestamp | formatUNIXtime }}
@@ -9,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import format from 'date-fns/format'
 
 export default {
@@ -19,6 +23,12 @@ export default {
   },
   props: {
     message: Object,
+  },
+  computed: {
+    ...mapState('auth', ['authedUser']),
+    isNew() {
+      return this.message.data.timestamp > this.authedUser.readUntil
+    },
   },
   methods: {
     readUntil() {
