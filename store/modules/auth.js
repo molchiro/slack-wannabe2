@@ -37,8 +37,10 @@ export default {
     },
     readUntil(context, messageCreatedAt) {
       context.commit('readUntil', messageCreatedAt)
-      db.doc(`users/${context.state.authedUser.uid}`)
-        .set({ readUntil: messageCreatedAt }, { merge: true })
+      db.doc(`users/${context.state.authedUser.uid}`).set(
+        { readUntil: messageCreatedAt },
+        { merge: true }
+      )
     },
     startListener(context) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
