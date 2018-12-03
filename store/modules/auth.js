@@ -44,34 +44,39 @@ export default {
     },
     startListener(context) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
-        const authedUsersRef = db.doc(`users/${authedUser.uid}`)
-        authedUsersRef
-          .get()
-          .then(doc => {
-            let userData = {}
-            if (!doc.exists) {
-              userData = {
-                displayName: authedUser.displayName,
-                firstVisitAt: new Date().getTime(),
-                readUntil: 0,
+        if (authedUser) {
+          const authedUsersRef = db.doc(`users/${authedUser.uid}`)
+          authedUsersRef
+            .get()
+            .then(doc => {
+              let userData = {}
+              if (!doc.exists) {
+                userData = {
+                  displayName: authedUser.displayName,
+                  firstVisitAt: new Date().getTime(),
+                  readUntil: 0,
+                }
+                doc.ref.set(userData)
+              } else {
+                userData = doc.data()
               }
-              doc.ref.set(userData)
-            } else {
-              userData = doc.data()
-            }
-            return Promise.resolve(userData)
-          })
-          .then(userData => {
-            context.commit('setUser', {
-              ...userData,
-              uid: authedUser.uid,
+              return Promise.resolve(userData)
             })
-            context.commit('loaded')
-            authedUsersRef.set(
-              { lastVisitAt: new Date().getTime() },
-              { merge: true }
-            )
-          })
+            .then(userData => {
+              context.commit('setUser', {
+                ...userData,
+                uid: authedUser.uid,
+              })
+              authedUsersRef.set(
+                { lastVisitAt: new Date().getTime() },
+                { merge: true }
+              )
+              context.commit('loaded')
+            })
+        } else {
+          context.commit('setUser', null)
+          context.commit('loaded')
+        }
       })
     },
     stopListener(context) {
