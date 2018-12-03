@@ -42,37 +42,37 @@ export default {
     },
     startListener({ commit }) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
-        if (authedUser) {
-          const authedUsersRef = db.doc(`users/${authedUser.uid}`)
-          authedUsersRef
-            .get()
-            .then(doc => {
-              let userData = {}
-              if (!doc.exists) {
-                userData = {
-                  displayName: authedUser.displayName,
-                  firstVisitAt: new Date().getTime(),
-                  readUntil: 0,
-                }
-                doc.ref.set(userData)
-              } else {
-                userData = doc.data()
-              }
-              return Promise.resolve(userData)
-            })
-            .then(userData => {
-              commit('loadedUser', {
-                ...userData,
-                uid: authedUser.uid,
-              })
-              authedUsersRef.set(
-                { lastVisitAt: new Date().getTime() },
-                { merge: true }
-              )
-            })
-        } else {
+        if (!authedUser) {
           commit('loadedUser', null)
+          return
         }
+        const authedUsersRef = db.doc(`users/${authedUser.uid}`)
+        authedUsersRef
+          .get()
+          .then(doc => {
+            let userData = {}
+            if (!doc.exists) {
+              userData = {
+                displayName: authedUser.displayName,
+                firstVisitAt: new Date().getTime(),
+                readUntil: 0,
+              }
+              doc.ref.set(userData)
+            } else {
+              userData = doc.data()
+            }
+            return Promise.resolve(userData)
+          })
+          .then(userData => {
+            commit('loadedUser', {
+              ...userData,
+              uid: authedUser.uid,
+            })
+            authedUsersRef.set(
+              { lastVisitAt: new Date().getTime() },
+              { merge: true }
+            )
+          })
       })
     },
     stopListener(context) {
