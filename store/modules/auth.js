@@ -12,17 +12,15 @@ export default {
     }
   },
   mutations: {
-    setUser(state, user) {
+    loadedUser(state, user) {
       state.authedUser = user
+      state.isLoading = false
     },
     readUntil(state, messageCreatedAt) {
       state.authedUser.readUntil = messageCreatedAt
     },
     loading(state) {
       state.isLoading = true
-    },
-    loaded(state) {
-      state.isLoading = false
     },
   },
   getters: {
@@ -63,7 +61,7 @@ export default {
               return Promise.resolve(userData)
             })
             .then(userData => {
-              commit('setUser', {
+              commit('loadedUser', {
                 ...userData,
                 uid: authedUser.uid,
               })
@@ -71,11 +69,9 @@ export default {
                 { lastVisitAt: new Date().getTime() },
                 { merge: true }
               )
-              commit('loaded')
             })
         } else {
-          commit('setUser', null)
-          commit('loaded')
+          commit('loadedUser', null)
         }
       })
     },
