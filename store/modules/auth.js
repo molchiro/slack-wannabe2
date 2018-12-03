@@ -31,18 +31,18 @@ export default {
     },
   },
   actions: {
-    signIn(context) {
-      context.commit('loading')
+    signIn({ commit }) {
+      commit('loading')
       firebase.auth().signInWithRedirect(provider)
     },
-    readUntil(context, messageCreatedAt) {
-      context.commit('readUntil', messageCreatedAt)
-      db.doc(`users/${context.state.authedUser.uid}`).set(
+    readUntil({ commit, state }, messageCreatedAt) {
+      commit('readUntil', messageCreatedAt)
+      db.doc(`users/${state.authedUser.uid}`).set(
         { readUntil: messageCreatedAt },
         { merge: true }
       )
     },
-    startListener(context) {
+    startListener({ commit }) {
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
         if (authedUser) {
           const authedUsersRef = db.doc(`users/${authedUser.uid}`)
@@ -63,7 +63,7 @@ export default {
               return Promise.resolve(userData)
             })
             .then(userData => {
-              context.commit('setUser', {
+              commit('setUser', {
                 ...userData,
                 uid: authedUser.uid,
               })
@@ -71,11 +71,11 @@ export default {
                 { lastVisitAt: new Date().getTime() },
                 { merge: true }
               )
-              context.commit('loaded')
+              commit('loaded')
             })
         } else {
-          context.commit('setUser', null)
-          context.commit('loaded')
+          commit('setUser', null)
+          commit('loaded')
         }
       })
     },

@@ -23,19 +23,19 @@ export default {
     },
   },
   actions: {
-    startListener(context) {
+    startListener({ commit, rootState }) {
       this.unsubscribe = messagesRef
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
-              context.commit('push', {
+              commit('push', {
                 id: change.doc.id,
                 data: change.doc.data(),
               })
               if (
                 change.doc.data().timestamp >
-                context.rootState.auth.authedUser.readUntil
+                rootState.auth.authedUser.readUntil
               ) {
                 if ('Notification' in window) {
                   const permission = Notification.permission
@@ -54,7 +54,7 @@ export default {
               // 編集を検知した時の処理
             }
             if (change.type === 'removed') {
-              context.commit('pop', change.doc)
+              commit('pop', change.doc)
             }
           })
         })
@@ -63,6 +63,7 @@ export default {
       this.unsubscribe()
     },
     add(context, message) {
+      console.log(context)
       messagesRef.add(message)
     },
     delete(context, message) {
