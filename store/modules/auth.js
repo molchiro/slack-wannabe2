@@ -21,7 +21,7 @@ export default {
     loading(state) {
       state.isLoading = true
     },
-    loaded(state, status) {
+    loaded(state) {
       state.isLoading = false
     },
   },
