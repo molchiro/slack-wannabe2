@@ -41,6 +41,16 @@ export default {
       )
     },
     startListener({ commit }) {
+      const createNewUser = (authedUser, doc) => {
+        const userData = {
+          displayName: authedUser.displayName,
+          firstVisitAt: new Date().getTime(),
+          readUntil: 0,
+        }
+        doc.ref.set(userData)
+        return userData
+      }
+
       this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
         if (!authedUser) {
           commit('loadedUser', null)
@@ -52,12 +62,7 @@ export default {
           .then(doc => {
             let userData = {}
             if (!doc.exists) {
-              userData = {
-                displayName: authedUser.displayName,
-                firstVisitAt: new Date().getTime(),
-                readUntil: 0,
-              }
-              doc.ref.set(userData)
+              userData = createNewUser(authedUser, doc)
             } else {
               userData = doc.data()
             }
