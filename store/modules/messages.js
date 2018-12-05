@@ -24,39 +24,56 @@ export default {
   },
   actions: {
     startListener({ commit, rootState }) {
+      let isFirstLoad = true
+      const isNewMessage = doc => {
+        return doc.data().timestamp > rootState.auth.authedUser.readUntil
+      }
+      const notifyNewMessage = () => {
+        if ('Notification' in window) {
+          const permission = Notification.permission
+
+          if (permission === 'denied' || permission === 'granted') {
+            // なんかする？
+          }
+
+          Notification.requestPermission().then(() => {
+            const notification = new Notification('新しいメッセージ')
+          })
+        }
+      }
+      const pushMessage = doc => {
+        commit('push', {
+          id: doc.id,
+          data: doc.data(),
+        })
+      }
       this.unsubscribe = messagesRef
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
-          snapshot.docChanges().forEach(change => {
-            if (change.type === 'added') {
-              commit('push', {
-                id: change.doc.id,
-                data: change.doc.data(),
-              })
-              if (
-                change.doc.data().timestamp >
-                rootState.auth.authedUser.readUntil
-              ) {
-                if ('Notification' in window) {
-                  const permission = Notification.permission
-
-                  if (permission === 'denied' || permission === 'granted') {
-                    // なんかする？
-                  }
-
-                  Notification.requestPermission().then(() => {
-                    const notification = new Notification('新しいメッセージ')
-                  })
+          if (isFirstLoad) {
+            isFirstLoad = false
+            snapshot.forEach(doc => {
+              pushMessage(doc)
+            })
+            if (isNewMessage(snapshot.docs[snapshot.docs.length - 1])) {
+              notifyNewMessage()
+            }
+          } else {
+            snapshot.docChanges().forEach(change => {
+              if (change.type === 'added') {
+                pushMessage(change.doc)
+                if (isNewMessage(change.doc)) {
+                  notifyNewMessage()
                 }
               }
-            }
-            if (change.type === 'modified') {
-              // 編集を検知した時の処理
-            }
-            if (change.type === 'removed') {
-              commit('pop', change.doc)
-            }
-          })
+              if (change.type === 'modified') {
+                // 編集を検知した時の処理
+              }
+              if (change.type === 'removed') {
+                commit('pop', change.doc)
+              }
+            })
+          }
         })
     },
     stopListener(context) {
