@@ -63,7 +63,6 @@ export default {
       this.unsubscribe()
     },
     add(context, message) {
-      console.log(context)
       messagesRef.add(message)
     },
     delete(context, message) {
