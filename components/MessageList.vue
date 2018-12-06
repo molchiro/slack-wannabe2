@@ -1,44 +1,40 @@
 <template lang="pug">
-  .container
-    MessageItem(
-      v-for="message in messages"
-      :key="message.key"
-      :message="message"
-      @deleteMessage="deleteMessage"
-    )
+  v-card
+    v-list(two-line)
+      div(
+        v-for="(message, index) in messages"
+        :key="message.id"
+      )
+        div(v-if="index === 0 || isNewDay(message, messages[index - 1])")
+          v-divider
+          v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
+        MessageItem(:message="message")
 </template>
 
 <script>
-import firebase from '~/plugins/firebase.js'
+import { mapState } from 'vuex'
 import MessageItem from '~/components/MessageItem'
-const messagesRef = firebase.database().ref('messages')
-
+import format from 'date-fns/format'
 export default {
   components: {
     MessageItem,
   },
-  data() {
-    return {
-      messages: [],
-    }
+  computed: {
+    ...mapState('messages', ['messages']),
   },
   mounted() {
-    messagesRef.on('child_added', snapshot => {
-      this.messages.push({
-        key: snapshot.key,
-        val: snapshot.val(),
-      })
-    })
-    messagesRef.on('child_removed', removedMessage => {
-      const removedMessageIndex = this.messages.findIndex(
-        x => x.key === removedMessage.key
-      )
-      this.messages.splice(removedMessageIndex, 1)
-    })
+    this.$store.dispatch('messages/startListener')
+  },
+  destroyed() {
+    this.$store.dispatch('messages/stopListener')
   },
   methods: {
-    deleteMessage(targetMessageKey) {
-      messagesRef.child(targetMessageKey).remove()
+    UNIXtimeToDate(UNIXtime) {
+      return format(UNIXtime, 'YYYY-MM-DD')
+    },
+    isNewDay(currentMessage, prevMessage) {
+      const getDate = message => this.UNIXtimeToDate(message.data.timestamp)
+      return getDate(currentMessage) !== getDate(prevMessage)
     },
   },
 }

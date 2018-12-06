@@ -1,21 +1,21 @@
 <template lang="pug">
-  .container
-    .app-title slack-wannabe2
-    span(v-if="isAuthed")
-      .button(@click="signOut") sign out
-      .auth-username {{ authUserName }}
+  v-toolbar
+    v-toolbar-title slack-wannabe2
+    v-spacer
+    v-toolbar-items(v-if="isAuthed")
+      v-layout(align-center justify-end fill-height) {{ authUserName }}
+      v-btn(@click="signOut" flat) ログアウト
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import firebase from '~/plugins/firebase.js'
 
 export default {
   computed: {
     ...mapGetters('auth', ['isAuthed']),
     ...mapState({
-      authUserName: state => state.auth.user.displayName,
+      authUserName: state => state.auth.authedUser.displayName,
     }),
   },
   methods: {
@@ -27,12 +27,4 @@ export default {
 </script>
 
 <style scoped lang="sass">
-  .container
-    display: table
-  .app-title
-    float: left
-  .auth-username
-    float: right
-  .button
-    float: right
 </style>

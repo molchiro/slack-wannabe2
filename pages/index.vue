@@ -1,17 +1,17 @@
 <template lang="pug">
-  section.container
-    ChatContainer
+  v-layout(column)
+    MessageList.scroll-y(style="height: calc(90vh - 64px)")
+    MessagePost(style="height: 10vh")
 </template>
 
 <script>
-import ChatContainer from '~/components/ChatContainer.vue'
+import MessageList from '~/components/MessageList'
+import MessagePost from '~/components/MessagePost'
 
 export default {
   components: {
-    ChatContainer,
+    MessageList,
+    MessagePost,
   },
 }
 </script>
-
-<style scoped lang="sass">
-</style>

@@ -1,6 +1,6 @@
 # slack-wannabe2
 
-> My pioneering Nuxt.js project
+> My classy Nuxt.js project
 
 ## Build Setup
 

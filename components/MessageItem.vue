@@ -1,13 +1,18 @@
 <template lang="pug">
-  .container
-    .message-item
-    | {{ message.val.displayName}}
-    | {{ message.val.timestamp | formatUNIXtime }}
-    .button(@click='deleteMe') delete
-    div(v-html="formatNewLine(message.val.content)")
+  v-list-tile(@click='readUntil')
+    v-list-tile-content
+      v-badge(v-model="isNew" color="red lighten-3")
+        span.caption(slot="badge") new
+        v-list-tile-title {{ message.data.displayName}}
+      v-badge
+      v-list-tile-sub-title.text--primary(v-html="formatNewLine(message.data.content)" )
+    v-list-tile-action
+      v-list-tile-action-text {{ message.data.timestamp | formatUNIXtime }}
+      v-btn(@click='deleteMessage') 削除
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import format from 'date-fns/format'
 
 export default {
@@ -19,9 +24,18 @@ export default {
   props: {
     message: Object,
   },
+  computed: {
+    ...mapState('auth', ['authedUser']),
+    isNew() {
+      return this.message.data.timestamp > this.authedUser.readUntil
+    },
+  },
   methods: {
-    deleteMe() {
-      this.$emit('deleteMessage', this.message.key)
+    readUntil() {
+      this.$store.dispatch('auth/readUntil', this.message.data.timestamp)
+    },
+    deleteMessage() {
+      this.$store.dispatch('messages/delete', this.message)
     },
     formatNewLine(str) {
       return str.replace(/\n/g, '<br>')
@@ -29,7 +43,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="sass">
-  .message-item
-</style>
