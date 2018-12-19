@@ -8,26 +8,26 @@ export default {
   state() {
     return {
       rooms: [],
-      selectedRoom: '7GgevlydJpzgema5UCJB',
+      selectedRoomID: '7GgevlydJpzgema5UCJB',
     }
   },
   mutations: {
-    initRooms(state) {
+    initialize(state) {
       state.rooms = []
     },
-    addRoom(state, roomID) {
+    push(state, roomID) {
       state.rooms.push(roomID)
     },
   },
   actions: {
     initRooms({ commit, rootState }) {
-      commit('initRooms')
+      commit('initialize')
       roomsRef
         .where('members', 'array-contains', rootState.auth.authedUser.uid)
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            commit('addRoom', { ...doc.data(), id: doc.id })
+            commit('push', { ...doc.data(), id: doc.id })
           })
         })
     },

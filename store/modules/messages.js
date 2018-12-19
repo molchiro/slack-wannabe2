@@ -12,6 +12,9 @@ export default {
     }
   },
   mutations: {
+    initialize(state) {
+      state.messages = []
+    },
     push(state, message) {
       state.messages.push(message)
     },
@@ -48,11 +51,12 @@ export default {
         })
       }
       this.unsubscribe = messagesRef
-        .where('roomID', '==', rootState.rooms.selectedRoom)
+        .where('roomID', '==', rootState.rooms.selectedRoomID)
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
           if (isFirstLoad) {
             isFirstLoad = false
+            commit('initialize')
             snapshot.forEach(doc => {
               pushMessage(doc)
             })
@@ -86,7 +90,7 @@ export default {
         timestamp: new Date().getTime(),
         displayName: rootState.auth.authedUser.displayName,
         content: content,
-        roomID: rootState.rooms.selectedRoom,
+        roomID: rootState.rooms.selectedRoomID,
       })
     },
     delete(context, message) {
