@@ -25,8 +25,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
   data() {
     return {
@@ -36,22 +34,11 @@ export default {
       rules: [v => v !== '' || 'メッセージは空欄不可です'],
     }
   },
-  computed: {
-    ...mapState({
-      user: state => state.auth.authedUser,
-    }),
-  },
   methods: {
     postMessage() {
       if (this.$refs.post.validate()) {
-        const now = new Date().getTime()
-        this.$store.dispatch('auth/readUntil', now)
-        this.$store.dispatch('messages/add', {
-          uid: this.user.uid,
-          timestamp: now,
-          displayName: this.user.displayName,
-          content: this.content,
-        })
+        this.$store.dispatch('auth/readUntil', new Date().getTime())
+        this.$store.dispatch('messages/add', this.content)
         this.$refs.post.reset()
         this.sheet = false
       }

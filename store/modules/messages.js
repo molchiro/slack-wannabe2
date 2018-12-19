@@ -80,8 +80,14 @@ export default {
     stopListener(context) {
       this.unsubscribe()
     },
-    add(context, message) {
-      messagesRef.add(message)
+    add({ commit, rootState }, content) {
+      messagesRef.add({
+        uid: rootState.auth.authedUser.uid,
+        timestamp: new Date().getTime(),
+        displayName: rootState.auth.authedUser.displayName,
+        content: content,
+        roomID: rootState.rooms.selectedRoom,
+      })
     },
     delete(context, message) {
       messagesRef.doc(message.id).delete()
