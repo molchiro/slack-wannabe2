@@ -48,6 +48,7 @@ export default {
         })
       }
       this.unsubscribe = messagesRef
+        .where('roomID', '==', rootState.rooms.selectedRoom)
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
           if (isFirstLoad) {
