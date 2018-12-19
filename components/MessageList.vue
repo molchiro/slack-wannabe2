@@ -21,6 +21,13 @@ export default {
   },
   computed: {
     ...mapState('messages', ['messages']),
+    ...mapState('rooms', ['selectedRoomID']),
+  },
+  watch: {
+    selectedRoomID: function() {
+      this.$store.dispatch('messages/stopListener')
+      this.$store.dispatch('messages/startListener')
+    },
   },
   mounted() {
     this.$store.dispatch('messages/startListener')

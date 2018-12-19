@@ -56,7 +56,9 @@ export default {
         .onSnapshot(snapshot => {
           if (isFirstLoad) {
             isFirstLoad = false
-            commit('initialize')
+            if (snapshot.empty) {
+              return
+            }
             snapshot.forEach(doc => {
               pushMessage(doc)
             })
@@ -81,8 +83,9 @@ export default {
           }
         })
     },
-    stopListener(context) {
+    stopListener({ commit }) {
       this.unsubscribe()
+      commit('initialize')
     },
     add({ commit, rootState }, content) {
       messagesRef.add({
