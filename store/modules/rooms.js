@@ -18,6 +18,9 @@ export default {
     push(state, roomID) {
       state.rooms.push(roomID)
     },
+    select(state, roomID) {
+      state.selectedRoomID = roomID
+    },
   },
   actions: {
     initRooms({ commit, rootState }) {
@@ -30,6 +33,9 @@ export default {
             commit('push', { ...doc.data(), id: doc.id })
           })
         })
+    },
+    selectRoom({ commit }, roomID) {
+      commit('select', roomID)
     },
   },
 }
