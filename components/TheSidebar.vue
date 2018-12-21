@@ -5,10 +5,11 @@
         v-for="room in rooms"
         :key="room.id"
         @click="selectRoom(room.id)"
+        ripple
+        :color="room.id === selectedRoomID ? 'blue' : 'black'"
       )
         v-list-tile-content
           v-list-tile-title {{ room.name }}
-          span(v-if="room.id === selectedRoomID") 選択中
 </template>
 
 <script>
