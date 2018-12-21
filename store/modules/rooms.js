@@ -8,7 +8,7 @@ export default {
   state() {
     return {
       rooms: [],
-      selectedRoomID: '7GgevlydJpzgema5UCJB',
+      selectedRoomID: '',
     }
   },
   mutations: {
@@ -30,7 +30,10 @@ export default {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            commit('push', { ...doc.data(), id: doc.id })
+            commit('push', {
+              ...doc.data(),
+              id: doc.id,
+            })
           })
         })
     },

@@ -34,11 +34,9 @@ export default {
       const notifyNewMessage = () => {
         if ('Notification' in window) {
           const permission = Notification.permission
-
           if (permission === 'denied' || permission === 'granted') {
             // なんかする？
           }
-
           Notification.requestPermission().then(() => {
             const notification = new Notification('新しいメッセージ')
           })
@@ -50,36 +48,40 @@ export default {
           data: doc.data(),
         })
       }
+      const readFirstSnapshot = snapshot => {
+        if (snapshot.empty) {
+          return
+        }
+        snapshot.forEach(doc => {
+          pushMessage(doc)
+        })
+        if (isNewMessage(snapshot.docs[snapshot.docs.length - 1])) {
+          notifyNewMessage()
+        }
+      }
+      const readEventSnapshot = snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            pushMessage(change.doc)
+            if (isNewMessage(change.doc)) {
+              notifyNewMessage()
+            }
+          } else if (change.type === 'modified') {
+            // 編集を検知した時の処理
+          } else if (change.type === 'removed') {
+            commit('pop', change.doc)
+          }
+        })
+      }
       this.unsubscribe = messagesRef
         .where('roomID', '==', rootState.rooms.selectedRoomID)
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
           if (isFirstLoad) {
             isFirstLoad = false
-            if (snapshot.empty) {
-              return
-            }
-            snapshot.forEach(doc => {
-              pushMessage(doc)
-            })
-            if (isNewMessage(snapshot.docs[snapshot.docs.length - 1])) {
-              notifyNewMessage()
-            }
+            readFirstSnapshot(snapshot)
           } else {
-            snapshot.docChanges().forEach(change => {
-              if (change.type === 'added') {
-                pushMessage(change.doc)
-                if (isNewMessage(change.doc)) {
-                  notifyNewMessage()
-                }
-              }
-              if (change.type === 'modified') {
-                // 編集を検知した時の処理
-              }
-              if (change.type === 'removed') {
-                commit('pop', change.doc)
-              }
-            })
+            readEventSnapshot(snapshot)
           }
         })
     },
