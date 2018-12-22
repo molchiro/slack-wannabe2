@@ -37,10 +37,10 @@ export default {
   methods: {
     postMessage() {
       if (this.$refs.post.validate()) {
-        this.$store.dispatch('auth/readUntil', new Date().getTime())
         this.$store.dispatch('messages/add', this.content)
         this.$refs.post.reset()
         this.sheet = false
+        this.$store.dispatch('auth/readUntil', new Date().getTime())
       }
     },
   },
