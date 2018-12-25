@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card
+  v-card.scroll-y
     v-list(two-line)
       div(
         v-for="(message, index) in messages"

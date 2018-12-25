@@ -2,7 +2,7 @@
   v-layout
     TheSidebar
     v-layout(v-if="selectedRoomID" column)
-      MessageList.scroll-y(style="height: calc(90vh - 64px)")
+      MessageList(style="height: calc(90vh - 64px)")
       MessagePost(style="height: 10vh")
     v-card(v-else height="100vh" width="100vw")
        v-layout(align-center justify-center  fill-height) roomを選択してください
