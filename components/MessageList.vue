@@ -29,11 +29,12 @@ export default {
     selectedRoomID: function() {
       this.$store.dispatch('messages/stopListener')
       this.$store.dispatch('messages/startListener')
-      this.scrollToEnd()
     },
   },
   mounted() {
     this.$store.dispatch('messages/startListener')
+  },
+  updated() {
     this.scrollToEnd()
   },
   destroyed() {
