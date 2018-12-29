@@ -9,6 +9,7 @@ export default {
   state() {
     return {
       messages: [],
+      status: '',
     }
   },
   mutations: {
@@ -24,10 +25,13 @@ export default {
       )
       state.messages.splice(targetMessageIndex, 1)
     },
+    changeStatus(state, status) {
+      state.status = status
+    },
   },
   actions: {
-    startListener({ commit, rootState }) {
-      let isFirstLoad = true
+    startListener({ commit, state, rootState }) {
+      commit('changeStatus', 'loading')
       const isNewMessage = doc => {
         return doc.data().timestamp > rootState.auth.authedUser.readUntil
       }
@@ -50,6 +54,7 @@ export default {
       }
       const readFirstSnapshot = snapshot => {
         if (snapshot.empty) {
+          commit('changeStatus', 'empty')
           return
         }
         snapshot.forEach(doc => {
@@ -58,6 +63,7 @@ export default {
         if (isNewMessage(snapshot.docs[snapshot.docs.length - 1])) {
           notifyNewMessage()
         }
+        commit('changeStatus', 'firstLoad')
       }
       const readEventSnapshot = snapshot => {
         snapshot.docChanges().forEach(change => {
@@ -71,14 +77,14 @@ export default {
           } else if (change.type === 'removed') {
             commit('pop', change.doc)
           }
+          commit('changeStatus', 'eventFired')
         })
       }
       this.unsubscribe = messagesRef
         .where('roomID', '==', rootState.rooms.selectedRoomID)
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
-          if (isFirstLoad) {
-            isFirstLoad = false
+          if (state.status === 'loading') {
             readFirstSnapshot(snapshot)
           } else {
             readEventSnapshot(snapshot)
