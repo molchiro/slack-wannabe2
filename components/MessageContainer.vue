@@ -1,6 +1,7 @@
 <template lang="pug">
   v-layout(column)
     v-btn.scroll-btn(
+      v-show="!isScrolledToEnd"
       absolute
       fab
       small
@@ -10,7 +11,7 @@
       v-icon(dark) keyboard_arrow_down
     MessageList.scroll-y(
       @new-message="scrollToEnd"
-      ref="messageContainer"
+      ref="messageList"
       style="height: calc(90vh - 64px)"
     )
     MessagePost(style="height: 10vh")
@@ -27,6 +28,9 @@ export default {
   },
   data() {
     return {
+      scrollTop: 0,
+      timer: null,
+      isScrolledToEnd: true,
       messageListEl: null,
     }
   },
@@ -38,17 +42,37 @@ export default {
       this.$store.dispatch('messages/stopListener')
       this.$store.dispatch('messages/startListener')
     },
+    scrollTop: function() {
+      this.isScrolledToEnd = this.messageListEl
+        ? this.messageListEl.scrollHeight -
+            this.messageListEl.offsetHeight -
+            this.scrollTop ===
+          0
+        : false
+    },
   },
   mounted() {
-    this.messageListEl = this.$refs.messageContainer.$el
+    this.messageListEl = this.$refs.messageList.$el
     this.$store.dispatch('messages/startListener')
+    this.messageListEl.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
+    this.messageListEl.removeEventListner('scroll', this.handleScroll)
     this.$store.dispatch('messages/stopListener')
   },
   methods: {
+    handleScroll() {
+      if (this.timer === null) {
+        this.timer = setTimeout(() => {
+          this.scrollTop = this.messageListEl.scrollTop
+          clearTimeout(this.timer)
+          this.timer = null
+        }, 100)
+      }
+    },
     scrollToEnd() {
-      this.messageListEl.scrollTop = this.messageListEl.scrollHeight
+      const el = this.messageListEl
+      el.scrollTop = el.scrollHeight
     },
   },
 }
