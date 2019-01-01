@@ -43,12 +43,9 @@ export default {
       this.$store.dispatch('messages/startListener')
     },
     scrollTop: function() {
-      this.isScrolledToEnd = this.messageListEl
-        ? this.messageListEl.scrollHeight -
-            this.messageListEl.offsetHeight -
-            this.scrollTop ===
-          0
-        : false
+      const el = this.messageListEl
+      const scrollBottom = el.scrollHeight - el.offsetHeight - this.scrollTop
+      this.isScrolledToEnd = el ? scrollBottom === 0 : false
     },
   },
   mounted() {
