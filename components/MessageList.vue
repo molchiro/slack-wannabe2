@@ -20,10 +20,23 @@ export default {
     MessageItem,
   },
   computed: {
+    ...mapState('rooms', ['selectedRoomID']),
     ...mapState('messages', ['messages']),
+  },
+  watch: {
+    selectedRoomID: function() {
+      this.$store.dispatch('messages/stopListener')
+      this.$store.dispatch('messages/startListener')
+    },
   },
   updated() {
     this.$emit('new-message')
+  },
+  mounted() {
+    this.$store.dispatch('messages/startListener')
+  },
+  beforeDestroy() {
+    this.$store.dispatch('messages/stopListener')
   },
   methods: {
     UNIXtimeToDate(UNIXtime) {

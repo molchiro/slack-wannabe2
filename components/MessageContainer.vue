@@ -34,14 +34,7 @@ export default {
       messageListEl: null,
     }
   },
-  computed: {
-    ...mapState('rooms', ['selectedRoomID']),
-  },
   watch: {
-    selectedRoomID: function() {
-      this.$store.dispatch('messages/stopListener')
-      this.$store.dispatch('messages/startListener')
-    },
     scrollTop: function() {
       const el = this.messageListEl
       const scrollBottom = el.scrollHeight - el.offsetHeight - this.scrollTop
@@ -50,12 +43,10 @@ export default {
   },
   mounted() {
     this.messageListEl = this.$refs.messageList.$el
-    this.$store.dispatch('messages/startListener')
     this.messageListEl.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
     this.messageListEl.removeEventListner('scroll', this.handleScroll)
-    this.$store.dispatch('messages/stopListener')
   },
   methods: {
     handleScroll() {
