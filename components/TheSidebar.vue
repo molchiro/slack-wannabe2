@@ -18,6 +18,10 @@ export default {
   computed: mapState('rooms', ['rooms', 'selectedRoomID']),
   mounted() {
     this.$store.dispatch('rooms/initRooms')
+    this.$store.dispatch('notifications/startListener')
+  },
+  beforeDestroy() {
+    this.$store.dispatch('notifications/stopListener')
   },
   methods: {
     selectRoom(roomID) {
