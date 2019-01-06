@@ -1,7 +1,7 @@
 <template lang="pug">
   v-navigation-drawer
     v-list
-      v-list-tile(
+      v-list-tile.room-tile(
         v-for="room in rooms"
         :key="room.id"
         @click="selectRoom(room.id)"
@@ -9,13 +9,21 @@
         :color="room.id === selectedRoomID ? 'blue' : 'black'"
       )
         v-list-tile-content
-          v-list-tile-title {{ room.name }}
+          v-badge.room-badge(left)
+            span.caption(
+              v-if="notifications[room.id]"
+              slot="badge"
+              ) {{ notifications[room.id].number }}
+            v-list-tile-title {{ room.name }}
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
-  computed: mapState('rooms', ['rooms', 'selectedRoomID']),
+  computed: {
+    ...mapState('rooms', ['rooms', 'selectedRoomID']),
+    ...mapState('notifications', ['notifications']),
+  },
   mounted() {
     this.$store.dispatch('rooms/initRooms')
     this.$store.dispatch('notifications/startListener')
@@ -30,3 +38,8 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="sass">
+  .room-badge
+    margin-left: 18pt
+</style>
