@@ -16,10 +16,7 @@ export default {
       state.notifications = {}
     },
     change(state, payload) {
-      state.notifications[payload.roomID] = {
-        number: payload.number,
-        latestMessageID: payload.latestMessageID,
-      }
+      state.notifications[payload.roomID] = payload
     },
   },
   actions: {
@@ -29,12 +26,7 @@ export default {
         .onSnapshot(snapshot => {
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added' || change.type === 'modified') {
-              const x = change.doc.data()
-              commit('change', {
-                roomID: x.roomID,
-                number: x.number,
-                latestMessageID: x.latestMessageID,
-              })
+              commit('change', change.doc.data())
             }
           })
         })
