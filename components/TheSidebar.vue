@@ -11,7 +11,7 @@
         v-list-tile-content
           v-badge.room-badge(left)
             span.caption(
-              v-if="notifications[room.id]"
+              v-if="notifications[room.id] && notifications[room.id].number > 0"
               slot="badge"
               ) {{ notifications[room.id].number }}
             v-list-tile-title {{ room.name }}
