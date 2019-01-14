@@ -21,12 +21,31 @@ export default {
   },
   actions: {
     startListener({ commit, rootState }) {
+      const notify = (number, latestMessageContent) => {
+        if ('Notification' in window) {
+          const permission = Notification.permission
+          if (permission === 'denied' || permission === 'granted') {
+            // なんかする？
+          }
+          Notification.requestPermission().then(() => {
+            const message =
+              number > 1
+                ? `新しい${number}件のメッセージ`
+                : latestMessageContent
+            const notification = new Notification(message)
+          })
+        }
+      }
       this.unsubscribe = notificationsRef
         .where('userID', '==', rootState.auth.authedUser.uid)
         .onSnapshot(snapshot => {
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added' || change.type === 'modified') {
-              commit('change', change.doc.data())
+              const data = change.doc.data()
+              commit('change', data)
+              if (data.notified === false) {
+                notify(data.number, 'ここにメッセージ内容を入れる')
+              }
             }
           })
         })

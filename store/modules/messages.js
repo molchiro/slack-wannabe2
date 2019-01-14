@@ -32,20 +32,6 @@ export default {
   actions: {
     startListener({ commit, state, rootState }) {
       commit('changeStatus', 'loading')
-      const isNewMessage = doc => {
-        return doc.data().timestamp > rootState.auth.authedUser.readUntil
-      }
-      const notifyNewMessage = () => {
-        if ('Notification' in window) {
-          const permission = Notification.permission
-          if (permission === 'denied' || permission === 'granted') {
-            // なんかする？
-          }
-          Notification.requestPermission().then(() => {
-            const notification = new Notification('新しいメッセージ')
-          })
-        }
-      }
       const pushMessage = doc => {
         commit('push', {
           id: doc.id,
@@ -60,18 +46,12 @@ export default {
         snapshot.forEach(doc => {
           pushMessage(doc)
         })
-        if (isNewMessage(snapshot.docs[snapshot.docs.length - 1])) {
-          notifyNewMessage()
-        }
         commit('changeStatus', 'firstLoad')
       }
       const readEventSnapshot = snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             pushMessage(change.doc)
-            if (isNewMessage(change.doc)) {
-              notifyNewMessage()
-            }
           } else if (change.type === 'modified') {
             // 編集を検知した時の処理
           } else if (change.type === 'removed') {
