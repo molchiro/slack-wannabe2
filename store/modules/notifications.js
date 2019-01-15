@@ -21,20 +21,36 @@ export default {
   },
   actions: {
     startListener({ commit, rootState }) {
-      const notify = (number, latestMessageContent) => {
+      const notify = message => {
         if ('Notification' in window) {
           const permission = Notification.permission
           if (permission === 'denied' || permission === 'granted') {
             // なんかする？
           }
           Notification.requestPermission().then(() => {
-            const message =
-              number > 1
-                ? `新しい${number}件のメッセージ`
-                : latestMessageContent
             const notification = new Notification(message)
           })
         }
+      }
+      const createMessage = async (number, latestMessageID, roomID) => {
+        if (number > 1) {
+          return `新しい${number}件のメッセージ`
+        } else {
+          const messageSnap = await db.doc(`messages/${latestMessageID}`).get()
+          const roomSnap = await db.doc(`rooms/${roomID}`).get()
+          const roomName = roomSnap.data().name
+          const auther = messageSnap.data().displayName
+          const content = messageSnap.data().content
+          return `[${auther}@${roomName}]${content}`
+        }
+      }
+      const notified = notificationId => {
+        db.doc(`notifications/${notificationId}`).set(
+          {
+            notified: true,
+          },
+          { merge: true }
+        )
       }
       this.unsubscribe = notificationsRef
         .where('userID', '==', rootState.auth.authedUser.uid)
@@ -44,7 +60,14 @@ export default {
               const data = change.doc.data()
               commit('change', data)
               if (data.notified === false) {
-                notify(data.number, 'ここにメッセージ内容を入れる')
+                createMessage(
+                  data.number,
+                  data.latestMessageID,
+                  data.roomID
+                ).then(message => {
+                  notify(message)
+                  notified(change.doc.id)
+                })
               }
             }
           })
