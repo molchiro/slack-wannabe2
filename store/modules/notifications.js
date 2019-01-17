@@ -40,6 +40,7 @@ export default {
           { merge: true }
         )
       }
+      let isFirstLoad = true
       this.unsubscribe = notificationsRef
         .where('userID', '==', rootState.auth.authedUser.uid)
         .onSnapshot(snapshot => {
@@ -47,17 +48,20 @@ export default {
             if (change.type === 'added' || change.type === 'modified') {
               const data = change.doc.data()
               commit('change', data)
-              if (data.notified === true) {
-                return
+              if (!isFirstLoad) {
+                if (data.notified === true) {
+                  return
+                }
+                const message =
+                  data.number > 1
+                    ? `新しい${data.number}件のメッセージ`
+                    : data.content
+                notify(message)
               }
-              const message =
-                data.number > 1
-                  ? `新しい${data.number}件のメッセージ`
-                  : data.content
-              notify(message)
               notified(change.doc.id)
             }
           })
+          isFirstLoad = false
         })
     },
     stopListener({ commit }) {
