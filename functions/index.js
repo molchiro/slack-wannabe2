@@ -8,17 +8,22 @@ exports.createMessage = functions.firestore
   .document('messages/{messageId}')
   .onCreate(async event => {
     const roomID = event.data().roomID
-    const notificationsRef = db.collection('notifications')
-    const notificationsSnap = await notificationsRef
-      .where('roomID', '==', roomID)
-      .get()
+    const notifsRef = db.collection('notifications')
+    const notifsSnap = await notifsRef.where('roomID', '==', roomID).get()
+    const roomRef = db.doc(`rooms/${roomID}`)
+    const roomSnap = await roomRef.get()
+    const roomName = roomSnap.data().name
+    const auther = event.data().displayName
+    const msgContent = event.data().content
+    const notifContent = `[${auther}@${roomName}]${msgContent}`
 
-    notificationsSnap.forEach(notification => {
+    notifsSnap.forEach(notification => {
       notification.ref.set(
         {
           number: notification.data().number + 1,
           latestMessageID: event.id,
           notified: false,
+          content: notifContent,
         },
         { merge: true }
       )

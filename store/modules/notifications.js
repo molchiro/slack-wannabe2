@@ -32,18 +32,6 @@ export default {
           })
         }
       }
-      const createMessage = async (number, latestMessageID, roomID) => {
-        if (number > 1) {
-          return `新しい${number}件のメッセージ`
-        } else {
-          const messageSnap = await db.doc(`messages/${latestMessageID}`).get()
-          const roomSnap = await db.doc(`rooms/${roomID}`).get()
-          const roomName = roomSnap.data().name
-          const auther = messageSnap.data().displayName
-          const content = messageSnap.data().content
-          return `[${auther}@${roomName}]${content}`
-        }
-      }
       const notified = notificationId => {
         db.doc(`notifications/${notificationId}`).set(
           {
@@ -59,16 +47,15 @@ export default {
             if (change.type === 'added' || change.type === 'modified') {
               const data = change.doc.data()
               commit('change', data)
-              if (data.notified === false) {
-                createMessage(
-                  data.number,
-                  data.latestMessageID,
-                  data.roomID
-                ).then(message => {
-                  notify(message)
-                  notified(change.doc.id)
-                })
+              if (data.notified === true) {
+                return
               }
+              const message =
+                data.number > 1
+                  ? `新しい${data.number}件のメッセージ`
+                  : data.content
+              notify(message)
+              notified(change.doc.id)
             }
           })
         })
