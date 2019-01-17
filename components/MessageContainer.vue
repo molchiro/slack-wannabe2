@@ -60,7 +60,7 @@ export default {
       return new Promise(resolve => setTimeout(resolve, msec))
     },
     async handleScroll() {
-      await this.sleep(1000)
+      await this.sleep(100)
       this.scrollTop = this.messageListEl.scrollTop
     },
     scrollToEnd() {
