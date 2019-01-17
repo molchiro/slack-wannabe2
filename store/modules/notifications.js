@@ -32,14 +32,6 @@ export default {
           })
         }
       }
-      const notified = notificationId => {
-        db.doc(`notifications/${notificationId}`).set(
-          {
-            notified: true,
-          },
-          { merge: true }
-        )
-      }
       let isFirstLoad = true
       this.unsubscribe = notificationsRef
         .where('userID', '==', rootState.auth.authedUser.uid)
@@ -48,10 +40,9 @@ export default {
             if (change.type === 'added' || change.type === 'modified') {
               const data = change.doc.data()
               commit('change', data)
-              if (!isFirstLoad && !data.isNotified) {
+              if (!isFirstLoad) {
                 notify(data.content)
               }
-              notified(change.doc.id)
             }
           })
           isFirstLoad = false

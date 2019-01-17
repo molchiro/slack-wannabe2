@@ -22,7 +22,6 @@ exports.createMessage = functions.firestore
         {
           number: notification.data().number + 1,
           latestMessageID: event.id,
-          isNotified: false,
           content: notifContent,
         },
         { merge: true }
