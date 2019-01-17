@@ -1,7 +1,7 @@
 <template lang="pug">
   v-layout(column)
     v-btn.scroll-btn(
-      v-show="!isScrolledToEnd"
+      v-show="isScrolledToEnd === false"
       absolute
       fab
       small
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       scrollTop: 0,
-      isScrolledToEnd: true,
+      isScrolledToEnd: null,
       messageListEl: null,
     }
   },
@@ -38,6 +38,14 @@ export default {
       const el = this.messageListEl
       const scrollBottom = el.scrollHeight - el.offsetHeight - this.scrollTop
       this.isScrolledToEnd = el ? scrollBottom === 0 : false
+    },
+    isScrolledToEnd: async function() {
+      if (this.isScrolledToEnd) {
+        await this.sleep(3000)
+        if (this.isScrolledToEnd) {
+          this.$store.dispatch('auth/readUntil', new Date().getTime())
+        }
+      }
     },
   },
   mounted() {

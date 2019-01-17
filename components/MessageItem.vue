@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-list-tile(@click='readUntil')
+  v-list-tile
     v-list-tile-content
       v-badge(v-model="isNew" color="red lighten-3")
         span.caption(slot="badge") new
@@ -31,9 +31,6 @@ export default {
     },
   },
   methods: {
-    readUntil() {
-      this.$store.dispatch('auth/readUntil', this.message.data.timestamp)
-    },
     deleteMessage() {
       this.$store.dispatch('messages/delete', this.message)
     },
