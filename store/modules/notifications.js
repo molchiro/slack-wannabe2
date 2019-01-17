@@ -48,7 +48,7 @@ export default {
             if (change.type === 'added' || change.type === 'modified') {
               const data = change.doc.data()
               commit('change', data)
-              if (!isFirstLoad && data.isNotified) {
+              if (!isFirstLoad && !data.isNotified) {
                 notify(data.content)
               }
               notified(change.doc.id)
