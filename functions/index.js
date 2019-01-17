@@ -15,7 +15,7 @@ exports.createMessage = functions.firestore
     const roomName = roomSnap.data().name
     const auther = event.data().displayName
     const msgContent = event.data().content
-    const notifContent = `[${auther}@${roomName}]${msgContent}`
+    const notifContent = `[${auther}@${roomName}] ${msgContent}`
 
     notifsSnap.forEach(notification => {
       notification.ref.set(
