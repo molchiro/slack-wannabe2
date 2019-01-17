@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       scrollTop: 0,
-      timer: null,
       isScrolledToEnd: true,
       messageListEl: null,
     }
@@ -49,14 +48,12 @@ export default {
     this.messageListEl.removeEventListner('scroll', this.handleScroll)
   },
   methods: {
-    handleScroll() {
-      if (this.timer === null) {
-        this.timer = setTimeout(() => {
-          this.scrollTop = this.messageListEl.scrollTop
-          clearTimeout(this.timer)
-          this.timer = null
-        }, 100)
-      }
+    sleep(msec) {
+      return new Promise(resolve => setTimeout(resolve, msec))
+    },
+    async handleScroll() {
+      await this.sleep(1000)
+      this.scrollTop = this.messageListEl.scrollTop
     },
     scrollToEnd() {
       const el = this.messageListEl
