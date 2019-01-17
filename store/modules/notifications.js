@@ -52,11 +52,7 @@ export default {
                 if (data.notified === true) {
                   return
                 }
-                const message =
-                  data.number > 1
-                    ? `新しい${data.number}件のメッセージ`
-                    : data.content
-                notify(message)
+                notify(data.content)
               }
               notified(change.doc.id)
             }
