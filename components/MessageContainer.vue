@@ -43,7 +43,7 @@ export default {
       if (this.isScrolledToEnd) {
         await this.sleep(3000)
         if (this.isScrolledToEnd) {
-          this.$store.dispatch('auth/readUntil', new Date().getTime())
+          this.$store.dispatch('notifications/checked')
         }
       }
     },

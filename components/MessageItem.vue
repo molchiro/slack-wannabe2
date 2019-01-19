@@ -26,8 +26,10 @@ export default {
   },
   computed: {
     ...mapState('auth', ['authedUser']),
+    ...mapState('notifications', ['notifications']),
     isNew() {
-      return this.message.data.timestamp > this.authedUser.readUntil
+      const data = this.message.data
+      return data.timestamp > this.notifications[data.roomID].checkedAt
     },
   },
   methods: {

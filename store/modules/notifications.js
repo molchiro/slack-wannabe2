@@ -39,8 +39,9 @@ export default {
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added' || change.type === 'modified') {
               const data = change.doc.data()
-              commit('change', data)
-              if (!isFirstLoad) {
+              const notificationsID = change.doc.id
+              commit('change', { ...data, notificationsID })
+              if (!isFirstLoad && data.number > 0) {
                 notify(data.content)
               }
             }
@@ -51,6 +52,20 @@ export default {
     stopListener({ commit }) {
       this.unsubscribe()
       commit('initialize')
+    },
+    checked({ state, rootState }) {
+      const selectedRoomID = rootState.rooms.selectedRoomID
+      const notifications = state.notifications
+      const notificationID = notifications[selectedRoomID].notificationsID
+      notificationsRef.doc(notificationID).set(
+        {
+          checkedAt: new Date().getTime(),
+          number: 0,
+        },
+        {
+          merge: true,
+        }
+      )
     },
   },
 }

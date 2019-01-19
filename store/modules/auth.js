@@ -33,13 +33,6 @@ export default {
       commit('loading')
       firebase.auth().signInWithRedirect(provider)
     },
-    readUntil({ commit, state }, messageCreatedAt) {
-      commit('readUntil', messageCreatedAt)
-      db.doc(`users/${state.authedUser.uid}`).set(
-        { readUntil: messageCreatedAt },
-        { merge: true }
-      )
-    },
     startListener({ commit }) {
       const createNewUser = (authedUser, doc) => {
         const userData = {
