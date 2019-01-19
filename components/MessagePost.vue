@@ -38,7 +38,7 @@ export default {
     postMessage() {
       if (this.$refs.post.validate()) {
         this.$store.dispatch('messages/add', this.content)
-        this.$store.dispatch('auth/readUntil', new Date().getTime())
+        this.$store.dispatch('notifications/checked')
         this.$refs.post.reset()
         this.sheet = false
       }

@@ -16,9 +16,6 @@ export default {
       state.authedUser = user
       state.isLoading = false
     },
-    readUntil(state, messageCreatedAt) {
-      state.authedUser.readUntil = messageCreatedAt
-    },
     loading(state) {
       state.isLoading = true
     },
@@ -38,7 +35,6 @@ export default {
         const userData = {
           displayName: authedUser.displayName,
           firstVisitAt: new Date().getTime(),
-          readUntil: 0,
         }
         doc.ref.set(userData)
         return userData
