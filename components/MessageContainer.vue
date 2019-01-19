@@ -41,7 +41,7 @@ export default {
     },
     isScrolledToEnd: async function() {
       if (this.isScrolledToEnd) {
-        await this.sleep(3000)
+        await this.sleep(2000)
         if (this.isScrolledToEnd) {
           this.$store.dispatch('notifications/checked')
         }
@@ -60,7 +60,7 @@ export default {
       return new Promise(resolve => setTimeout(resolve, msec))
     },
     async handleScroll() {
-      await this.sleep(100)
+      await this.sleep(50)
       this.scrollTop = this.messageListEl.scrollTop
     },
     scrollToEnd() {
