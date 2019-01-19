@@ -39,8 +39,8 @@ export default {
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added' || change.type === 'modified') {
               const data = change.doc.data()
-              const notificationsID = change.doc.id
-              commit('change', { ...data, notificationsID })
+              const notificationID = change.doc.id
+              commit('change', { ...data, notificationID })
               if (!isFirstLoad && data.number > 0) {
                 notify(data.content)
               }
@@ -56,7 +56,7 @@ export default {
     checked({ state, rootState }) {
       const selectedRoomID = rootState.rooms.selectedRoomID
       const notifications = state.notifications
-      const notificationID = notifications[selectedRoomID].notificationsID
+      const notificationID = notifications[selectedRoomID].notificationID
       notificationsRef.doc(notificationID).set(
         {
           checkedAt: new Date().getTime(),
