@@ -16,7 +16,10 @@ export default {
       state.notifications = {}
     },
     change(state, payload) {
-      state.notifications[payload.roomID] = payload
+      state.notifications = {
+        ...state.notifications,
+        [payload.roomID]: payload,
+      }
     },
   },
   actions: {
