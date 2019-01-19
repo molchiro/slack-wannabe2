@@ -18,9 +18,13 @@ exports.createMessage = functions.firestore
     const notifContent = `[${auther}@${roomName}] ${msgContent}`
 
     notifsSnap.forEach(notification => {
+      const number =
+        notification.data().userID === event.data().uid
+          ? notification.data().number
+          : notification.data().number + 1
       notification.ref.set(
         {
-          number: notification.data().number + 1,
+          number: number,
           latestMessageID: event.id,
           content: notifContent,
         },
