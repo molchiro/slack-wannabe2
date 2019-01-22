@@ -40,34 +40,30 @@ export default {
         return userData
       }
 
-      this.unsubscribe = firebase.auth().onAuthStateChanged(authedUser => {
-        if (!authedUser) {
-          commit('loadedUser', null)
-          return
-        }
-        const authedUsersRef = db.doc(`users/${authedUser.uid}`)
-        authedUsersRef
-          .get()
-          .then(doc => {
-            let userData = {}
-            if (!doc.exists) {
-              userData = createNewUser(authedUser, doc)
-            } else {
-              userData = doc.data()
-            }
-            return Promise.resolve(userData)
+      this.unsubscribe = firebase
+        .auth()
+        .onAuthStateChanged(async authedUser => {
+          if (!authedUser) {
+            commit('loadedUser', null)
+            return
+          }
+          let userData = {}
+          const authedUserRef = db.doc(`users/${authedUser.uid}`)
+          const authedUserSnap = await authedUserRef.get()
+          if (!authedUserSnap.exists) {
+            userData = createNewUser(authedUser, authedUserSnap)
+          } else {
+            userData = authedUserSnap.data()
+          }
+          commit('loadedUser', {
+            ...userData,
+            uid: authedUser.uid,
           })
-          .then(userData => {
-            commit('loadedUser', {
-              ...userData,
-              uid: authedUser.uid,
-            })
-            authedUsersRef.set(
-              { lastVisitAt: new Date().getTime() },
-              { merge: true }
-            )
-          })
-      })
+          authedUserRef.set(
+            { lastVisitAt: new Date().getTime() },
+            { merge: true }
+          )
+        })
     },
     stopListener(context) {
       unsubscribe()
