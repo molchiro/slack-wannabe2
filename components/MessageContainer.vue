@@ -35,11 +35,13 @@ export default {
   },
   watch: {
     scrollTop: function() {
+      // スクロール位置を監視し、最下部であればthis.isScrolledToEndをtrue
       const el = this.messageListEl
       const scrollBottom = el.scrollHeight - el.offsetHeight - this.scrollTop
       this.isScrolledToEnd = el ? scrollBottom === 0 : false
     },
     isScrolledToEnd: async function() {
+      // スクロール位置が最下部を2秒キープしたとき、既読をつける
       if (this.isScrolledToEnd) {
         await this.sleep(2000)
         if (this.isScrolledToEnd) {
