@@ -20,8 +20,8 @@ export default {
     MessageItem,
   },
   computed: {
-    ...mapState('rooms', ['selectedRoomID']),
     ...mapState('messages', ['messages']),
+    ...mapState('rooms', ['selectedRoomID']),
   },
   watch: {
     selectedRoomID: function() {
