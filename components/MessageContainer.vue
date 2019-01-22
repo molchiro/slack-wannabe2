@@ -10,7 +10,7 @@
     )
       v-icon(dark) keyboard_arrow_down
     MessageList.scroll-y(
-      @new-message="scrollToEnd"
+      @new-message="newMessage"
       ref="messageList"
       style="height: calc(90vh - 64px)"
     )
@@ -68,6 +68,11 @@ export default {
     scrollToEnd() {
       const el = this.messageListEl
       el.scrollTop = el.scrollHeight
+    },
+    newMessage() {
+      if (this.isScrolledToEnd !== false) {
+        this.scrollToEnd()
+      }
     },
   },
 }
