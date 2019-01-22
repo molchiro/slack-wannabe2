@@ -9,7 +9,6 @@ export default {
   state() {
     return {
       messages: [],
-      status: '',
     }
   },
   mutations: {
@@ -25,50 +24,25 @@ export default {
       )
       state.messages.splice(targetMessageIndex, 1)
     },
-    changeStatus(state, status) {
-      state.status = status
-    },
   },
   actions: {
     startListener({ commit, state, rootState }) {
-      commit('changeStatus', 'loading')
-      const pushMessage = doc => {
-        commit('push', {
-          id: doc.id,
-          data: doc.data(),
-        })
-      }
-      const readFirstSnapshot = snapshot => {
-        if (snapshot.empty) {
-          commit('changeStatus', 'empty')
-          return
-        }
-        snapshot.forEach(doc => {
-          pushMessage(doc)
-        })
-        commit('changeStatus', 'firstLoad')
-      }
-      const readEventSnapshot = snapshot => {
-        snapshot.docChanges().forEach(change => {
-          if (change.type === 'added') {
-            pushMessage(change.doc)
-          } else if (change.type === 'modified') {
-            // 編集を検知した時の処理
-          } else if (change.type === 'removed') {
-            commit('pop', change.doc)
-          }
-          commit('changeStatus', 'eventFired')
-        })
-      }
       this.unsubscribe = messagesRef
         .where('roomID', '==', rootState.rooms.selectedRoomID)
         .orderBy('timestamp', 'asc')
         .onSnapshot(snapshot => {
-          if (state.status === 'loading') {
-            readFirstSnapshot(snapshot)
-          } else {
-            readEventSnapshot(snapshot)
-          }
+          snapshot.docChanges().forEach(change => {
+            if (change.type === 'added') {
+              commit('push', {
+                id: change.doc.id,
+                data: change.doc.data(),
+              })
+            } else if (change.type === 'modified') {
+              // 編集を検知した時の処理
+            } else if (change.type === 'removed') {
+              commit('pop', change.doc)
+            }
+          })
         })
     },
     stopListener({ commit }) {
