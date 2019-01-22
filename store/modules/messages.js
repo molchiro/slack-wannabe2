@@ -26,7 +26,7 @@ export default {
     },
   },
   actions: {
-    startListener({ commit, state, rootState }) {
+    startListener({ commit, rootState }) {
       this.unsubscribe = messagesRef
         .where('roomID', '==', rootState.rooms.selectedRoomID)
         .orderBy('timestamp', 'asc')
