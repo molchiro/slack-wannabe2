@@ -23,19 +23,17 @@ export default {
     },
   },
   actions: {
-    initRooms({ commit, rootState }) {
+    async initRooms({ commit, rootState }) {
       commit('initialize')
-      roomsRef
+      const roomsSnap = await roomsRef
         .where('members', 'array-contains', rootState.auth.authedUser.uid)
         .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            commit('push', {
-              ...doc.data(),
-              id: doc.id,
-            })
-          })
+      roomsSnap.forEach(doc => {
+        commit('push', {
+          ...doc.data(),
+          id: doc.id,
         })
+      })
     },
     selectRoom({ commit }, roomID) {
       commit('select', roomID)

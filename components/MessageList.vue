@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card
+  div
     v-list(two-line)
       div(
         v-for="(message, index) in messages"
@@ -29,10 +29,13 @@ export default {
       this.$store.dispatch('messages/startListener')
     },
   },
+  updated() {
+    this.$emit('new-message')
+  },
   mounted() {
     this.$store.dispatch('messages/startListener')
   },
-  destroyed() {
+  beforeDestroy() {
     this.$store.dispatch('messages/stopListener')
   },
   methods: {
@@ -46,6 +49,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="sass">
-</style>
