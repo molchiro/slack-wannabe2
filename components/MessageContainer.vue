@@ -33,7 +33,13 @@ export default {
       messageListEl: null,
     }
   },
+  computed: {
+    ...mapState('rooms', ['selectedRoomID']),
+  },
   watch: {
+    selectedRoomID: function() {
+      this.isScrolledToEnd = null
+    },
     scrollTop: function() {
       // スクロール位置を監視し、最下部であればthis.isScrolledToEndをtrue
       const el = this.messageListEl
