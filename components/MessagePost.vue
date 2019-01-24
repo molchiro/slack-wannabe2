@@ -37,8 +37,8 @@ export default {
   methods: {
     postMessage() {
       if (this.$refs.post.validate()) {
-        this.$store.dispatch('messages/add', this.content)
         this.$store.dispatch('notifications/checked')
+        this.$store.dispatch('messages/add', this.content)
         this.$refs.post.reset()
         this.sheet = false
       }
