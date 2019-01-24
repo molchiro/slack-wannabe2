@@ -77,6 +77,7 @@ export default {
     },
     newMessage() {
       if (this.isScrolledToEnd !== false) {
+        this.isScrolledToEnd = false
         this.scrollToEnd()
       }
     },
