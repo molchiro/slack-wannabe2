@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    v-list(two-line)
+    div
       div(
         v-for="(message, index) in messages"
         :key="message.id"
