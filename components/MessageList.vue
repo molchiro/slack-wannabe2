@@ -5,7 +5,7 @@
         v-for="(message, index) in messages"
         :key="message.id"
       )
-        div(v-if="index === 0 || isNewDay(message, messages[index - 1])")
+        v-card(v-if="index === 0 || isNewDay(message, messages[index - 1])")
           v-divider
           v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
         MessageItem(:message="message")

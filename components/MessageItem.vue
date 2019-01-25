@@ -1,14 +1,18 @@
 <template lang="pug">
-  div
-    div
-      v-badge(v-model="isNew" color="red lighten-3")
-        span.caption(slot="badge") new
-        div {{ message.data.displayName}}
-      v-badge
-      div.text--primary(v-html="formatNewLine(message.data.content)" )
-    div
-      div {{ message.data.timestamp | formatUNIXtime }}
-      v-btn(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') 削除
+  v-card(column)
+    v-flex
+      v-layout(row)
+        v-flex(xs2)
+          v-badge(v-model="isNew" color="red lighten-3")
+            span.caption(slot="badge") new
+            div {{ message.data.displayName}}
+        v-flex(grow)
+          div {{ message.data.timestamp | formatUNIXtime }}
+        v-flex(shrink)
+          v-btn(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') 削除
+    v-flex
+      v-card
+        v-container(v-html="formatNewLine(message.data.content)" )
 </template>
 
 <script>
