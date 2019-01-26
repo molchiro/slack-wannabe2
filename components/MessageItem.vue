@@ -1,17 +1,16 @@
 <template lang="pug">
-  v-card(column)
-    v-flex
-      v-layout(row)
-        v-flex(xs2)
-          v-badge(v-model="isNew" color="red lighten-3")
-            span.caption(slot="badge") new
-            div {{ message.data.displayName}}
-        v-flex(grow)
-          div {{ message.data.timestamp | formatUNIXtime }}
-        v-flex(shrink)
-          v-icon(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
-    v-flex
-      v-container(v-html="formatNewLine(message.data.content)" )
+    v-card.py-2(column)
+      v-flex
+        v-layout(align-center row)
+          v-flex(shrink)
+            v-badge(v-model="isNew" color="red lighten-3")
+              span.caption(slot="badge") new
+              v-card-text.subheading.py-0 {{ message.data.displayName}}
+          v-flex(grow)
+            v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatUNIXtime }}
+          v-flex(shrink)
+            v-icon(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
+      v-card-text.pt-0.pb-0(v-html="formatNewLine(message.data.content)" )
 </template>
 
 <script>
