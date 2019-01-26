@@ -9,7 +9,7 @@
         v-flex(grow)
           div {{ message.data.timestamp | formatUNIXtime }}
         v-flex(shrink)
-          v-btn(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') 削除
+          v-icon(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
     v-flex
       v-card
         v-container(v-html="formatNewLine(message.data.content)" )
