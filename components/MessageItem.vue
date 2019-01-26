@@ -7,7 +7,7 @@
               span.caption(slot="badge") new
               v-card-text.subheading.py-0 {{ message.data.displayName}}
           v-flex(grow)
-            v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatUNIXtime }}
+            v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
           v-flex(shrink)
             v-icon(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
       v-card-text.pt-0.pb-0(v-html="formatNewLine(message.data.content)" )
@@ -19,8 +19,8 @@ import format from 'date-fns/format'
 
 export default {
   filters: {
-    formatUNIXtime(UNIXtime) {
-      return format(UNIXtime, 'YYYY-MM-DD HH:mm')
+    formatTimestamp(UNIXtime) {
+      return format(UNIXtime, 'HH:mm')
     },
   },
   props: {
