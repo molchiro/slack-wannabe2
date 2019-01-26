@@ -11,8 +11,7 @@
         v-flex(shrink)
           v-icon(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
     v-flex
-      v-card
-        v-container(v-html="formatNewLine(message.data.content)" )
+      v-container(v-html="formatNewLine(message.data.content)" )
 </template>
 
 <script>
