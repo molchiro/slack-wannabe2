@@ -10,7 +10,7 @@
             v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
           v-flex(shrink)
             v-icon.pr-2(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
-      v-card-text.pt-0.pb-0(v-html="formatNewLine(message.data.content)" )
+      v-card-text.py-0(v-html="formatNewLine(message.data.content)" )
 </template>
 
 <script>
