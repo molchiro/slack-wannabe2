@@ -10,7 +10,7 @@
             v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
           v-flex(shrink)
             v-icon.pr-2(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
-      v-card-text.py-0(v-html="formatNewLine(message.data.content)" )
+      v-card-text.py-0(v-html="htmlize(message.data.content)" )
 </template>
 
 <script>
@@ -40,6 +40,19 @@ export default {
     },
     formatNewLine(str) {
       return str.replace(/\n/g, '<br>')
+    },
+    createLink(str) {
+      const regexpURL = /(https?:\/\/[\w\-\.\/\?\,\#\:\%\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+)/
+      const encloseInAnchorTag = (match, url, offset, string) => {
+        return '<a href="' + url + '"target=”_blank”>' + url + '</a>'
+      }
+      return str.replace(regexpURL, encloseInAnchorTag)
+    },
+    htmlize(str) {
+      let res = str
+      res = this.formatNewLine(res)
+      res = this.createLink(res)
+      return res
     },
   },
 }
