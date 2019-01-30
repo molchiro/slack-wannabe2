@@ -9,7 +9,7 @@
           v-flex(grow)
             v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
           v-flex(shrink)
-            v-icon.pr-2(v-if='message.data.uid === authedUser.uid' @click='deleteMessage') delete
+            v-icon.pr-2(v-if='isMine' @click='deleteMessage') delete
       v-card-text.py-0(v-html="htmlize(message.data.content)" )
 </template>
 
@@ -32,6 +32,9 @@ export default {
     isNew() {
       const data = this.message.data
       return data.timestamp > this.notifications[data.roomID].checkedAt
+    },
+    isMine() {
+      return this.message.data.uid === this.authedUser.uid
     },
   },
   methods: {
