@@ -3,7 +3,7 @@
       v-flex
         v-layout(align-center row)
           v-flex(shrink)
-            v-badge(v-show="isNew && !isMine" color="red lighten-3")
+            v-badge(v-model="showBadge" color="red lighten-3")
               span.caption(slot="badge") new
               v-card-text.subheading.py-0 {{ message.data.displayName}}
           v-flex(grow)
@@ -35,6 +35,9 @@ export default {
     },
     isMine() {
       return this.message.data.uid === this.authedUser.uid
+    },
+    showBadge() {
+      return this.isNew && !this.isMine
     },
   },
   methods: {
