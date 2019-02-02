@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-toolbar
+  v-toolbar(app clipped-left)
     v-toolbar-title slack-wannabe2
     v-spacer
     v-toolbar-items(v-if="isAuthed")

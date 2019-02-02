@@ -1,5 +1,6 @@
 <template lang="pug">
   v-app
+    TheSidebar(v-if="isAuthed")
     TheNavbar
     v-content
       nuxt(v-if="isAuthed")
@@ -8,11 +9,13 @@
 </template>
 
 <script>
+import TheSidebar from '~/components/TheSidebar'
 import TheNavbar from '~/components/TheNavbar'
 import SignIn from '~/components/SignIn'
 import { mapGetters } from 'vuex'
 export default {
   components: {
+    TheSidebar,
     TheNavbar,
     SignIn,
   },

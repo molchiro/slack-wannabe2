@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-navigation-drawer
+  v-navigation-drawer(app clipped)
     v-list
       v-list-tile.room-tile(
         v-for="room in rooms"
