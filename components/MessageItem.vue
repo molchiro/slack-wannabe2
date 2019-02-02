@@ -48,7 +48,7 @@ export default {
       return str.replace(/\n/g, '<br>')
     },
     createLink(str) {
-      const regexpURL = /(https?:\/\/[\w\-\.\/\?\,\#\:\%\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+)/
+      const regexpURL = /(https?:\/\/[-./?,#:%&=\w\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+)/
       const encloseInAnchorTag = (match, url, offset, string) => {
         return '<a href="' + url + '"target=”_blank”>' + url + '</a>'
       }
