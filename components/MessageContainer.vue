@@ -12,9 +12,9 @@
     MessageList.scroll-y(
       @new-message="newMessage"
       ref="messageList"
-      style="height: calc(90vh - 64px)"
+      style="height: calc(100vh - 112px)"
     )
-    MessagePost(style="height: 10vh")
+    MessagePost
 </template>
 
 <script>
