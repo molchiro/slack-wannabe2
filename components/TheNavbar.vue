@@ -1,5 +1,6 @@
 <template lang="pug">
   v-toolbar(app clipped-left)
+    v-toolbar-side-icon(@click="toggleSidebar")
     v-toolbar-title slack-wannabe2
     v-spacer
     v-toolbar-items(v-if="isAuthed")
@@ -21,6 +22,9 @@ export default {
   methods: {
     signOut() {
       firebase.auth().signOut()
+    },
+    toggleSidebar() {
+      this.$emit('toggleSidebar')
     },
   },
 }

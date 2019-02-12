@@ -1,5 +1,10 @@
 <template lang="pug">
-  v-navigation-drawer(app clipped)
+  v-navigation-drawer(
+    app
+    clipped
+    v-model="show"
+    @input="sidebarShowChanged"
+  )
     v-list
       v-list-tile.room-tile(
         v-for="room in rooms"
@@ -20,6 +25,9 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  props: {
+    show: Boolean,
+  },
   computed: {
     ...mapState('rooms', ['rooms', 'selectedRoomID']),
     ...mapState('notifications', ['notifications']),
@@ -34,6 +42,9 @@ export default {
   methods: {
     selectRoom(roomID) {
       this.$store.dispatch('rooms/selectRoom', roomID)
+    },
+    sidebarShowChanged() {
+      this.$emit('sidebarShowChanged', this.show)
     },
   },
 }
