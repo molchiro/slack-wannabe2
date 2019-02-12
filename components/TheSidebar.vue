@@ -42,6 +42,9 @@ export default {
   methods: {
     selectRoom(roomID) {
       this.$store.dispatch('rooms/selectRoom', roomID)
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        this.show = false
+      }
     },
     sidebarShowChanged() {
       this.$emit('sidebarShowChanged', this.show)
