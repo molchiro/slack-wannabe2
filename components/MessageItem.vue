@@ -1,16 +1,16 @@
 <template lang="pug">
-    v-card.py-2(column)
+    v-card(column)
       v-flex
         v-layout(align-center row)
-          v-flex(shrink)
+          v-flex
             v-badge(v-model="showBadge" color="red lighten-3")
               span.caption(slot="badge") new
-              v-card-text.subheading.py-0 {{ message.data.displayName}}
-          v-flex(grow)
-            v-card-text.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
-          v-flex(shrink)
-            v-icon.pr-2(v-if='isMine' @click='deleteMessage') delete
-      v-card-text.py-0(v-html="htmlize(message.data.content)" )
+              div.subheading.py-0 {{ message.data.displayName}}
+          v-flex
+            div.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
+          v-flex
+            v-icon(v-if='isMine' @click='deleteMessage') delete
+      v-flex(v-html="htmlize(message.data.content)" )
 </template>
 
 <script>
