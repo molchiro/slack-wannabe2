@@ -10,7 +10,8 @@
             div.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
           v-flex
             v-icon(v-if='isMine' @click='deleteMessage') delete
-      v-flex(v-html="htmlize(message.data.content)" )
+      v-flex
+        div.break-word(v-html="htmlize(message.data.content)" )
 </template>
 
 <script>
@@ -57,9 +58,14 @@ export default {
     htmlize(str) {
       let res = str
       res = this.formatNewLine(res)
-      res = this.createLink(res)
+      // res = this.createLink(res)
       return res
     },
   },
 }
 </script>
+
+<style lang="sass" scoped>
+  .break-word
+    word-wrap: break-word
+</style>
