@@ -2,13 +2,14 @@
     v-card.px-3.py-2(column)
       v-flex
         v-layout(align-center row)
-          v-flex
+          v-flex(shrink)
             v-badge(v-model="showBadge" color="red lighten-3")
               span.caption(slot="badge") new
               div.subheading {{ message.data.displayName}}
-          v-flex
+          v-flex.pl-2(shrink)
             div.caption.grey--text {{ message.data.timestamp | formatTimestamp }}
-          v-flex
+          v-spacer
+          v-flex(shrink)
             v-icon(v-if='isMine' @click='deleteMessage') delete
       v-flex
         div.break-word(v-html="htmlize(message.data.content)" )
