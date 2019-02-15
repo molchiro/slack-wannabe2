@@ -1,13 +1,13 @@
 <template lang="pug">
-    v-card(column)
+    v-card.px-3.py-2(column)
       v-flex
         v-layout(align-center row)
           v-flex
             v-badge(v-model="showBadge" color="red lighten-3")
               span.caption(slot="badge") new
-              div.subheading.py-0 {{ message.data.displayName}}
+              div.subheading {{ message.data.displayName}}
           v-flex
-            div.caption.grey--text.py-0 {{ message.data.timestamp | formatTimestamp }}
+            div.caption.grey--text {{ message.data.timestamp | formatTimestamp }}
           v-flex
             v-icon(v-if='isMine' @click='deleteMessage') delete
       v-flex
