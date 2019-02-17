@@ -59,7 +59,7 @@ export default {
     htmlize(str) {
       let res = str
       res = this.formatNewLine(res)
-      // res = this.createLink(res)
+      res = this.createLink(res)
       return res
     },
   },
