@@ -1,14 +1,13 @@
 <template lang="pug">
   div
-    v-list(two-line)
-      div(
-        v-for="(message, index) in messages"
-        :key="message.id"
-      )
-        div(v-if="index === 0 || isNewDay(message, messages[index - 1])")
-          v-divider
-          v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
-        MessageItem(:message="message")
+    div(
+      v-for="(message, index) in messages"
+      :key="message.id"
+    )
+      v-card(v-if="index === 0 || isNewDay(message, messages[index - 1])")
+        v-divider
+        v-subheader {{ UNIXtimeToDate(message.data.timestamp) }}
+      MessageItem(:message="message")
 </template>
 
 <script>

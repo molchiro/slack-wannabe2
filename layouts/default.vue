@@ -1,6 +1,11 @@
 <template lang="pug">
   v-app
-    TheNavbar
+    TheSidebar(
+      v-if="isAuthed"
+      :show="sidebarShow"
+      @sidebarShowChanged="sidebarShowChanged"
+      )
+    TheNavbar(@toggleSidebar="toggleSidebar")
     v-content
       nuxt(v-if="isAuthed")
       v-container(v-else fill-height)
@@ -8,13 +13,20 @@
 </template>
 
 <script>
+import TheSidebar from '~/components/TheSidebar'
 import TheNavbar from '~/components/TheNavbar'
 import SignIn from '~/components/SignIn'
 import { mapGetters } from 'vuex'
 export default {
   components: {
+    TheSidebar,
     TheNavbar,
     SignIn,
+  },
+  data() {
+    return {
+      sidebarShow: true,
+    }
   },
   computed: {
     ...mapGetters('auth', ['isAuthed']),
@@ -24,6 +36,14 @@ export default {
   },
   destroyed() {
     this.$store.dispatch('auth/stopListener')
+  },
+  methods: {
+    toggleSidebar() {
+      this.sidebarShow = !this.sidebarShow
+    },
+    sidebarShowChanged(status) {
+      this.sidebarShow = status
+    },
   },
 }
 </script>
